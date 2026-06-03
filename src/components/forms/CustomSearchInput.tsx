@@ -5,7 +5,7 @@ export interface IProps {
     className?:string,
     placeholder?:string,
     value?:string,
-    onInput?: (e: React.FormEvent<HTMLInputElement>) => void
+    onInput?: (e: React.InputEvent<HTMLInputElement>) => void
 }
 
 export const CustomSearchInput = ({className, placeholder, value, onInput}:IProps) => {

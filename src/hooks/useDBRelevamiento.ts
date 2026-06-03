@@ -2,11 +2,18 @@ import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "../db/db";
 
 export function useDBRelevamiento() {
+    /*
     return useLiveQuery(
       () => db.relevamiento.toArray(),
       [],
       []
     ) ?? [];
+    */
+    const relevamientos = useLiveQuery( async () => {
+        return await db.relevamiento.toArray();
+    }, []); // importante para que reaccione al cambio
+    
+    return { relevamientos: relevamientos ?? [] };
 }
   
 /*

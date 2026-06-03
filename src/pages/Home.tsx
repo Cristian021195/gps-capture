@@ -19,7 +19,7 @@ const standalone = validateDisplayMode('standalone');
 
 export const Home = () => {    
     const {formatMessage:tr} = useIntl();
-    const relevamientos = useDBRelevamiento();
+    const {relevamientos} = useDBRelevamiento();
     const [relItem, setRelItem] = useState<IRelevamiento | null>(null);
     
     const handleDelete = async (relevamiento: IRelevamiento) => {

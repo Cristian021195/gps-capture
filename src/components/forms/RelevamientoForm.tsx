@@ -5,8 +5,8 @@ import { useRelevamientoForm } from "../../hooks/useRelevamientoForm";
 import type { IRelevamiento } from "../../interfaces/IEntidades";
 
 interface IProps {
-    relevamiento?: IRelevamiento | null;
-    setRelItem?: React.Dispatch<React.SetStateAction<IRelevamiento>>;
+    relevamiento: IRelevamiento | null;
+    setRelItem: React.Dispatch<React.SetStateAction<IRelevamiento | null>>;
 }
 
 export const RelevamientoForm = ({relevamiento, setRelItem}: IProps) => {

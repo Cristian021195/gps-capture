@@ -108,16 +108,21 @@
     "reset.tour":"¿Reiniciar guía?",
     "reset.tour.info":"Se restablece la explicación sobre el uso de la aplicación en todas sus secciones",
     "show": "Mostrar",
-    "ges.rel": "Gestión de Relevamiento",
+    "ges.rel": "Gestión de Relevamientos",
 
-    "ges.route": "Gestión de Ruta",
+    "ges.route": "Gestión de Rutas",
 
-    "ges.point": "Gestión de Punto",
+    "ges.point": "Gestión de Puntos",
 
     "save.edit": "Guardar / Editar",
 
     "duplicate": "Ya existe un registro con este valor",
 
     "name":"nombre",
-    "actions":"acciones"
+    "actions":"acciones",
+    "find": "Buscar",
+    "find.holder": "Ej: Tesa",
+    "ruta.holder": "Ej: Tesa 38",
+    "nuevo":"Nuevo",
+    "route.new":"Nuevo Ruta"
 }
