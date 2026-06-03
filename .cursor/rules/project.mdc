@@ -1,0 +1,11 @@
+---
+alwaysApply: true
+---
+
+# Project Rules
+
+- React and TypeScript only.
+- Not using Redux or Context API.
+- Only use Zustand, or custom Hooks.
+- IndexedDB only accesible by Dexie.
+- src/hooks only contains custom hooks, tanstack queries hooks, dexiejs hooks for each table.

@@ -1,0 +1,18 @@
+{
+    "home":"home",
+
+    "language.s":"Spanish (default)",
+    "language.es":"Spanish",
+    "language.en":"English",
+    "one.city":"Select a City",
+    "install.ad":"Installation Guide",
+    "iphone.ad": "Do you have an iPhone or Android?",
+    "iphone.ad.1": "We recommend following the ",
+    "iphone.ad.2": " so you can use the app comfortably",
+    "broken":"Unexpected Error",
+    "broken.t": "Action error or corrupted data",
+    "broken.d1": "When trying to select a filter or perform an action, the application execution crashed",
+    "broken.d2": "This occurs due to outdated or corrupted data after an application update",
+    "broken.d3": "We recommend trying again. If it fails again, try updating the application or deleting it along with its data and reinstalling it",
+    "error.continue":"Error querying data, you can continue anyway"
+}

@@ -1,0 +1,19 @@
+export const AppIcon = () => {
+  return (
+    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="16" cy="16" r="16" fill="#7DACA3"/>
+        <path d="M29.3479 12.7946C28.5932 9.15904 26.4252 5.97222 23.3209 3.93517" stroke="#F5F5F5" strokeWidth="0.75" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M16 15.8973L21.8624 3.00001" stroke="#F5F5F5" strokeWidth="1.04393" strokeLinecap="round"/>
+        <path d="M13 16L21.8624 2.93746" stroke="#F5F5F5" strokeWidth="1.04393" strokeLinecap="round"/>
+        <path d="M6 23L14 19" stroke="#F5F5F5" strokeLinecap="round"/>
+        <path d="M6.00004 23L12 16.5" stroke="#F5F5F5" strokeLinecap="round"/>
+        <path d="M8.42105 16H22.7368V20.6316C22.7368 21.3292 22.1713 21.8947 21.4737 21.8947H9.68421C8.98659 21.8947 8.42105 21.3292 8.42105 20.6316V16Z" fill="#7DACA3" stroke="#F5F5F5" strokeWidth="0.842105"/>
+        <path d="M16.8421 8.42105H21.4737C22.1713 8.42105 22.7369 8.98659 22.7369 9.68421V16H16.8421V8.42105Z" fill="#45A290" stroke="#F5F5F5" strokeWidth="0.842105"/>
+        <path d="M8.42105 9.68421C8.42105 8.98659 8.98659 8.42105 9.68421 8.42105H16.8421V16H8.42105V9.68421Z" fill="#31685E" stroke="#F5F5F5" strokeWidth="0.842105"/>
+        <path d="M10.1053 24C10.1053 24.6976 10.6708 25.2632 11.3684 25.2632C12.066 25.2632 12.6316 24.6976 12.6316 24H10.1053ZM10.1053 22.3158V24H12.6316V22.3158H10.1053Z" fill="#F5F5F5"/>
+        <path d="M18.5263 24C18.5263 24.6976 19.0919 25.2632 19.7895 25.2632C20.4871 25.2632 21.0526 24.6976 21.0526 24H18.5263ZM18.5263 22.3158V24H21.0526V22.3158H18.5263Z" fill="#F5F5F5"/>
+        <rect x="18" y="17" width="2" height="2.5" rx="0.5" fill="#F5F5F5"/>
+        <rect x="11" y="17" width="2" height="2.5" rx="0.5" fill="#F5F5F5"/>
+    </svg>
+  )
+}

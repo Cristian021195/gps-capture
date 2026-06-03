@@ -1,0 +1,185 @@
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Accordion } from "../ui/Accordion"
+import { Button, ListInput, List } from "konsta/react";
+import { HorarioFormMenuIcon, OrigenIcon, RutaIcon, DineroIcon, DestinoIcon, TagIcon } from '../svg/FormIcons';
+import { InfoIcon } from "../svg/InfoIcon";
+import { ArrowClose, ArrowOpen, ArrowSwitch } from "../svg/Arrows";
+import { useIntl } from "react-intl";
+import { useNavigate, useParams } from "react-router-dom";
+import { useDBDatosEmpresa } from "../../hooks/useDBDatosEmpresa";
+import { useBottomModal } from "../../store/bottom_modal";
+import { usePopUp } from "../../store/popup";
+import { useUpdateSearchParams } from "../../hooks/useUpdateSearchParams";
+import { BottomModalPrecioOpciones } from "../floating/BottomModalPrecioOpciones";
+import { PopupPrecioInfo } from "../floating/PopupPrecioInfo";
+import { usePrecioFilter } from "../../hooks/usePrecioFilter";
+import { GLOBAL } from "../../constants/global";
+import { useDBPreciosEmpresa } from "../../hooks/useDBPreciosEmpresa";
+import { useDBDatosPreciosEmpresaUrl } from "../../hooks/useDBDatosPreciosEmpresa";
+import { Precio } from "../../classes/Precio";
+
+export const PrecioForm = () => {
+    const { id } = useParams();
+    const [opn, setOpn] = useState(true);
+    const [isLoading] = useState(false);
+    const formRef = useRef<HTMLFormElement>(null);
+    const {formatMessage:tr} = useIntl();//grid grid-cols-2 horarios-step-0
+    const navigate = useNavigate();
+    const  updateParams = useUpdateSearchParams();
+    const {rutas} = useDBDatosEmpresa(id);
+    const {filtros, handleChangeFilter, switchCiudades, resetFilters, setFiltro} = usePrecioFilter(id);
+    const {precio_query_result} = useDBPreciosEmpresa(filtros.key);
+    const {empresa_url_query_result} = useDBDatosPreciosEmpresaUrl(filtros.key);        
+    const precio = useMemo(() => {
+        return precio_query_result ? new Precio(precio_query_result) : null;
+    }, [precio_query_result]);
+    const {setBottomModal} = useBottomModal();
+    const {setPopUp} = usePopUp();
+
+    useEffect(() => {
+        if (rutas.length > 0 && !filtros.ruta) {
+            setFiltro("ruta", rutas[0]);
+        }
+    }, [rutas, filtros.ruta, setFiltro]);
+    
+    return <>
+        <Accordion opn={opn}>
+            <form ref={formRef}>
+                <List strongIos insetIos className='my-1'>
+                    <div className="grid grid-cols-2 horarios-step-0">
+                        <ListInput
+                            title={tr({id:'company.schedule.route'})}
+                            type="select"
+                            dropdown
+                            colors={{bgMaterial:'k-panel-form'}}
+                            value={filtros.ruta}
+                            name="ruta"
+                            className='horarios-step-1'
+                            disabled={isLoading}
+                            placeholder="Ruta"
+                            onChange={handleChangeFilter}
+                            media={<RutaIcon />}>
+                                <optgroup>                                    
+                                    {
+                                        rutas.map(ruta=>{
+                                            return <option key={ruta} value={ruta}>{ruta}</option>
+                                        })
+                                    }
+                                </optgroup>
+                        </ListInput>
+                        <ListInput
+                            title={tr({id:'company.schedule.type'})}
+                            type="select"                            
+                            dropdown
+                            colors={{bgMaterial:'k-panel-form'}}
+                            value={filtros.tipo}
+                            name="tipo"
+                            className='horarios-step-1'
+                            disabled={isLoading}
+                            placeholder="Tipo"
+                            onChange={handleChangeFilter}
+                            media={<TagIcon/>}>
+                                <optgroup>
+                                    {
+                                        GLOBAL.TIPOS_PRECIO.map(po=>{
+                                                if(po.cant === 1){
+                                                    return <option key={po.id} value={po.id}>{tr({id:po.tipo})}</option>
+                                                }else{
+                                                    return <option key={po.id} value={po.id}>{tr({id:po.tipo})+"-"+po.cant}</option>
+                                                }
+                                            }                                            
+                                        )
+                                    }
+                                </optgroup>
+                        </ListInput>
+                    </div>
+                    <div className="grid grid-cols-2">
+                        <ListInput
+                            title={tr({id:'company.schedule.origin'})}
+                            type="select"
+                            dropdown
+                            colors={{bgMaterial:'k-panel-form'}}
+                            value={filtros.origen}
+                            placeholder="Todos"
+                            disabled={isLoading}
+                            name="origen"
+                            onChange={handleChangeFilter}
+                            media={<OrigenIcon />}>
+                                <optgroup className='[&_option]:capitalize'>
+                                    {
+                                        precio?.ciudades.map((ciudad, ci)=><option key={ciudad} value={ci   }>
+                                            {ciudad}
+                                        </option>)
+                                    }
+                                </optgroup>
+                        </ListInput>
+                        <ListInput
+                            title={tr({id:'company.schedule.destination'})}
+                            type="select"
+                            dropdown
+                            colors={{bgMaterial:'k-panel-form'}}
+                            value={filtros.destino}
+                            placeholder="Destino"
+                            name="destino"
+                            disabled={isLoading}
+                            onChange={handleChangeFilter}
+                            media={<DestinoIcon/>}>
+                                <optgroup className='[&_option]:capitalize'>
+                                    {
+                                        precio?.ciudades.map((ciudad, ci)=><option key={ciudad} value={ci}>
+                                            {ciudad}
+                                        </option>)
+                                    }
+                                </optgroup>
+                        </ListInput>
+                    </div>
+                </List>    
+            </form>
+        </Accordion>
+        <div className="mx-4">
+
+            <div className="flex gap-8">
+                <Button title="Actualizar" className="k-btn-tonal" onClick={()=>{
+                    updateParams({ emergent: "bottommodal" });
+                    setBottomModal({title:tr({id:'opciones'}), children:<BottomModalPrecioOpciones url={empresa_url_query_result} empresa_id={precio_query_result?.empresa_id} resetFilters={resetFilters}/>})
+                }} disabled={isLoading}>
+                    <HorarioFormMenuIcon/> 
+                </Button>
+                <Button title='Cambiar origen y destino' className="k-btn-tonal" onClick={()=>{
+                    switchCiudades()
+                }}>
+                    <ArrowSwitch/>
+                </Button>
+                <Button title='Info' className="k-btn-tonal" onClick={()=>{
+                    updateParams({ emergent: "popupbox"});
+                    setPopUp({
+                        title:tr({id:'info'}),
+                        children: <PopupPrecioInfo cb={()=>{
+                            updateParams({ emergent: null }, { replace: true });
+                            navigate('/info');
+                        }}/>
+                    })
+                }}>
+                    <InfoIcon/>
+                </Button>
+                <Button title='Colapsar' className="k-btn-tonal" disabled={isLoading} onClick={()=>{setOpn(!opn)}}>{opn ? <ArrowClose/> : <ArrowOpen/>} </Button>
+            </div>
+            {
+                precio?.getPrecio(filtros.origen+"", filtros.destino+"")
+                ? <div key={filtros.origen+""+filtros.destino+""} className="mt-12 flex flex-col items-center text-6xl hithere w-1/4 mx-auto">
+                    <DineroIcon width={120} height={120}/>
+                    ${
+                      // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+                      precio?.getPrecio(filtros.origen+"", filtros.destino+"")! > 0
+                      ?  precio?.getPrecio(filtros.origen+"", filtros.destino+"")
+                      : tr({id:'pending'})
+                    }
+                </div> 
+                : <div className="mt-8 flex flex-col items-center pop-up">
+                    <p className="text-4xl">{tr({id:'no.result'})}</p>
+                    <p>{tr({id:'validate.cities'})}</p>
+                </div>
+            }
+        </div>
+    </>
+}

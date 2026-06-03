@@ -1,0 +1,182 @@
+import { Block, Button, List, ListInput } from "konsta/react"
+import { useIntl } from 'react-intl';
+import { ArrowSwitch } from "../svg/Arrows";
+import { useDBCiudades } from "../../hooks/useDBCiudades";
+import { useAccesoDirectoFilter } from "../../hooks/useAccesoDirectoFilter";
+import { useTramos } from "../../hooks/useTramos";
+import { ClockIcon, ClockRemoveIcon, DiasIcon } from "../svg/FormIcons";
+import { AccesoDirectoCard } from "../ui/AccesoDirectoCard";
+import { DateTimeHorario } from '../../classes/DateTimeHorario';
+import { ShareHelper } from "../../classes/ShareHelper";
+import { TextHelper } from '../../classes/TextHelper';
+import { AyudaLink } from "../ui/AyudaLink";
+import { useBottomModal } from "../../store/bottom_modal";
+import { useUpdateSearchParams } from "../../hooks/useUpdateSearchParams";
+import { BottomModalCiudades } from "../floating/BottomModalCiudades";
+import { CustomMenuList } from "../ui/CustomMenuList";
+import type { Horario } from "../../classes/Horario";
+import { useHorarioFilter } from "../../hooks/useHorarioFilter";
+import { useNavigate } from "react-router-dom";
+
+interface IProps {
+    alto:string
+}
+
+const ORIGEN = window.location.origin;
+
+export const HorarioAccesoDirectoForm = ({alto=""}:IProps) => {
+    const {formatMessage:tr} = useIntl();
+    const ciudades = useDBCiudades();    
+    const {hora, origen_id, destino_id, hora_numerico, dias, switchCiudades, handleSelect, switchHora} = useAccesoDirectoFilter();
+    const {setFiltro} = useHorarioFilter();
+    //const destinos_ids = useDestinosDisponibles(origen_id || undefined); // remover a futuro
+    const { tramos, horariosMap, empresasMap } = useTramos(origen_id ?? 0, destino_id ?? 0, dias, hora_numerico);
+    const {setBottomModal} = useBottomModal();
+    const updateParams = useUpdateSearchParams();
+    const navigate = useNavigate();
+
+    const origen = TextHelper.capitalize(ciudades?.find(c => c.id === origen_id)?.ciudad) ?? "";
+    const destino = TextHelper.capitalize(ciudades?.find(c => c.id === destino_id)?.ciudad) ?? "";
+    const dias_str = tr({id:'dia_s'})+": "+tr({id:DateTimeHorario.getDiaActualTr(dias+"")});
+    const cierre_str = tr({id:'tramo.share'})+" "+ORIGEN;
+    const tramo_str = tr({id:'tramo'})+": "+origen+" → "+destino;
+    const servicio_str = tr({id:'prox'});
+    const servicio_strs = tr({id:'proxs'});
+
+    const handleCiudad = (opcion:number) => {
+        updateParams({ emergent: "bottommodal" });
+        setBottomModal({title:tr({id:'one.city'}), children:<BottomModalCiudades opcion={opcion}/>})
+    }
+
+    const navegarAFormulario = (horario:Horario) => {        
+        setFiltro('dias', horario.horario.dias+"");
+        setFiltro('ruta', horario.horario.ruta);
+        setFiltro('origen', horario.horario.sentido+"");
+        navigate(`/empresa/${horario.horario.empresa}/horario?c=1&p=1&id=${horario.empresa_id}`);
+    }
+
+    return <div>
+        <List strongIos insetIos className='my-1' >
+            <div className="flex items-center">
+                <div className="flex-1 ml-4 mr-2.5">
+                    <CustomMenuList title={tr({id:'company.schedule.origin'})} value={origen} onClick={()=>{handleCiudad(0)}}/>
+                </div>
+
+                <div className="flex flex-col gap-2">
+                    <Button small className="btn-sq-sm k-btn-tonal" onClick={switchHora}>
+                        {hora ? <ClockIcon/> : <ClockRemoveIcon/>} 
+                    </Button>
+                    <Button small className="btn-sq-sm k-btn-tonal" onClick={switchCiudades}>
+                        <ArrowSwitch/>
+                    </Button>
+                </div>                
+
+                <div className="flex-1 mr-4 ml-2.5">
+                    <CustomMenuList title={tr({id:'company.schedule.destination'})} value={destino} onClick={()=>{handleCiudad(1)}}/>
+                </div>
+            </div>
+            <div>
+                <ListInput
+                    type="select"
+                    dropdown
+                    colors={{bgMaterial:'k-panel-form rounded-b-xl', outlineBorderMaterial:'border-none'}}
+                    value={dias}
+                    name="dias"
+                    onChange={handleSelect}
+                    media={<DiasIcon />}>
+                        <option value="0"> {tr({id:'hab'})}</option>
+                        <option value="1"> {tr({id:'sab'})}</option>
+                        <option value="2"> {tr({id:'dom'})}</option>
+                        <option value="3"> {tr({id:'fer'})}</option>
+                </ListInput>
+            </div>
+        </List>
+        <Block className={"overflow-y-auto my-4 "+alto}>
+            <Button small className="k-btn w-fit mx-auto" disabled={tramos.length === 0} onClick={()=>{
+                const _tramos:string = tramos.map(t=>{
+                    const horario = horariosMap.get(t.key);
+                    const _precio = horario?.getPrecioDirectoPorNombre(t.origen, t.destino);
+                    const _empresa = TextHelper.capitalize(horario?.getEmpresa());
+                    //let precio_str = " - $"+ _precio;
+                    let precio_str = "";                    
+                    const viaje = DateTimeHorario.numericoAHhmm(t.salida)+" → "+DateTimeHorario.numericoAHhmm(t.llegada)+" - "+_empresa;
+
+                    if(_precio === undefined){
+                        precio_str = " - "+tr({id:'sin.precio'});
+                    }else if(_precio && _precio <= 0){
+                        precio_str = " - "+tr({id:'sin.precio'});
+                    }else{
+                        precio_str = " - $"+ _precio;
+                    }
+
+                    return viaje+precio_str;
+                }).join("\n");
+
+                ShareHelper.shareSimple({//editar
+                    text: ShareHelper.accesoDirectoFull(tramo_str, dias_str, servicio_str, _tramos, cierre_str),
+                    title:tr({id:'prox'}),
+                    cbErr: ()=>{}
+                }); 
+
+            }}>
+                {tr({id:'share.all'})}
+            </Button>
+            <div className="mt-4 space-y-2">
+            {
+                tramos.map((t,ti) => {
+                    const horario = horariosMap.get(t.key);
+                    const empresa = empresasMap.get(t.empresa_id);
+                    //console.log({dias, hd:horario?.horario.dias})
+                    const _precio = horario?.getPrecioDirectoPorNombre(t.origen, t.destino);
+                    const _empresa = TextHelper.capitalize(horario?.getEmpresa());
+                    let precio_str = "";                     
+                    //tr({id:'precio'})+": $"+_precio;
+                    const viaje = DateTimeHorario.numericoAHhmm(t.salida)+" → "+DateTimeHorario.numericoAHhmm(t.llegada)+" - "+_empresa;
+
+                    if(_precio === undefined){
+                        precio_str = tr({id:'precio'})+": "+tr({id:'no.price'});
+                    }else if(_precio && _precio <= 0){
+                        precio_str = tr({id:'precio'})+": "+tr({id:'no.price'});
+                    }else{
+                        precio_str = tr({id:'precio'})+": $"+_precio;
+                    }
+
+                    if(dias === horario?.horario.dias){                        
+                        return (
+                            <AccesoDirectoCard
+                                key={ti}
+                                id={t.id}
+                                origen={t.origen}
+                                destino={t.destino}
+                                dias={dias}
+                                salida={t.salida}
+                                llegada={t.llegada}
+                                ciudades={horario?.getCiudadesPorIndiceFila(t.fila, true)}
+                                precio={_precio}
+                                color_empresa={empresa?.color}
+                                empresa={_empresa}
+                                referencia={t.referencia}
+                                detalle={()=>{navegarAFormulario(horario)}}
+                                compartir={()=>{
+                                    ShareHelper.shareSimple({//editar
+                                        text: ShareHelper.accesoDirectoSimple(tramo_str, dias_str, precio_str, servicio_strs, viaje, cierre_str),
+                                        title:tr({id:'proxs'}),
+                                        cbErr: ()=>{}
+                                    }); 
+                                }}
+                            />
+                        );
+                    }
+                })
+            }
+            {
+                tramos.length === 0 && <div className="flex flex-col items-center pop-up">
+                    <p className="text-4xl">{tr({id:'no.result'})}</p>
+                    <p>{tr({id:'validate.schedule'})}</p>
+                </div>
+            }
+            </div>
+        </Block>
+        <AyudaLink/>
+    </div>
+}

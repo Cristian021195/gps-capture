@@ -1,0 +1,111 @@
+import { useEffect, useState } from 'react';
+import OneSignal from 'react-onesignal';
+//import { getIOSStatus } from './utils/pwaHelpers';
+import { getPlatform, validateDisplayMode } from '../../utils/navigator-data';
+import { Button, List, ListItem } from 'konsta/react';
+import { useIntl } from 'react-intl';
+import { BellIcon } from '../svg/UtilsIcon';
+import { InfoIcon } from '../svg/InfoIcon';
+import { Accordion } from '../ui/Accordion';
+import { useToast } from '../../store/toast';
+
+const platform = getPlatform();
+
+export const NotificationManager = () => {
+    const [status, setStatus] = useState<'loading' | 'needs-install' | 'can-prompt' | 'subscribed' | 'blocked'>('loading');
+    //const { isIOS, isStandalone } = getIOSStatus();
+    const standalone_mode = validateDisplayMode('standalone');
+    const [opn, setOpn] = useState(false);
+    const isIOS = platform === 'ios';
+    const {formatMessage:tr} = useIntl();
+    const {openToast} = useToast();
+
+    useEffect(() => {
+        const checkStatus = async () => {
+            const permission = Notification.permission;
+            
+            if (permission === 'denied') {
+                setStatus('blocked');
+                return;
+            }
+
+            const isEnabled = await OneSignal.Notifications.permission;
+            if (isEnabled) {
+                setStatus('subscribed');
+                return;
+            }
+                
+            // Lógica específica para iOS
+            if (platform === 'ios' && !standalone_mode) {
+                setStatus('needs-install');
+            } else {
+                setStatus('can-prompt');
+            }
+        };
+
+        checkStatus();
+    }, [isIOS, standalone_mode]);
+
+    const handleAction = async () => {
+        if (status === 'can-prompt') {
+            // Pedimos permiso
+            await OneSignal.Notifications.requestPermission();
+            
+            // En lugar de recargar la página, volvemos a consultar a OneSignal
+            // y actualizamos el estado de React mágicamente sin parpadeos.
+            const isEnabled = await OneSignal.Notifications.permission;
+            
+            if (isEnabled) {
+                setStatus('subscribed');
+            } else {
+                // Si lo denegó o lo cerró sin aceptar
+                setStatus(Notification.permission === 'denied' ? 'blocked' : 'can-prompt');
+            }
+        } else {
+            openToast({text:tr({id:'webpush.promt.err'})});
+        }
+    };
+
+
+    return (
+        <List strong className="bg-transparent dark:bg-transparent">
+            <ListItem
+                title={
+                    <div className="flex gap-2 items-center">
+                        {tr({id:'notification'})}
+                    </div>}
+                after={
+                    status === 'needs-install' && (
+                        <Button onClick={() => setOpn(!opn)} small className="w-fit k-btn-tonal align-middle" title="Notificaciones">
+                            <InfoIcon/>
+                        </Button>
+                    ) ||
+
+                    status === 'can-prompt' && (
+                        <Button onClick={handleAction} small className="w-fit k-btn-tonal align-middle" title="Notificaciones">
+                            <BellIcon/>&nbsp;{tr({id:'habilitar'})}
+                        </Button>
+                    ) ||
+
+                    status === 'subscribed' && (
+                        <Button small className="w-fit k-btn-tonal align-middle" title="Notificaciones" disabled>
+                            <BellIcon/>&nbsp;{tr({id:'habilitadas'})}
+                        </Button>
+                    ) ||
+
+                    status === 'blocked' && (
+                        <Button onClick={() => setOpn(!opn)} small className="w-fit k-btn-tonal align-middle" title="Notificaciones">
+                            <InfoIcon/>
+                        </Button>
+                    )                
+                }
+            />
+            <Accordion opn={opn}>
+                <div className="px-4">{
+                    status === 'blocked' ? tr({id:'webpush.info'}) :
+                    status === 'needs-install' && tr({id:'webpush.ios'})
+                }</div>
+            </Accordion>
+        </List>
+    );
+};

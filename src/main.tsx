@@ -1,0 +1,22 @@
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import './index.css'
+import App from './App.tsx'
+import { registerSW } from 'virtual:pwa-register';
+
+const updateSW = registerSW({
+  onNeedRefresh() {
+    localStorage.setItem('new_update', 'true');
+    setTimeout(() => {
+      updateSW();
+    }, 2000);
+  },
+  onOfflineReady() {
+  },  
+})
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+)

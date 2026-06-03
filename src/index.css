@@ -1,0 +1,291 @@
+@import "tailwindcss";
+@import "konsta/react/theme.css";
+
+:root {
+    --color-primary: #1e554a;
+    --color-primary-1: #0c3f35;
+    --color-primary-2:#1d2b2a;
+    --color-primary-3: #31685e;
+    --color-primary-4: #4a7d73;
+    --color-primary-5: #709890;
+    --color-primary-6: #a9cdc6;
+    --color-primary-7: #bcd9d3;
+    --color-primary-8: #cde7ec;    
+    --color-primary-9: #eef5f6;
+    --color-primary-10: #d5f1ec;
+
+    --color-alt-1: #49a68b;
+    --color-alt-2: #20b7af;
+
+    --color-danger:#7f2d38;
+    --color-danger-0:#3d030b;
+    --color-danger-0:#60151f;
+    --color-danger-0:#9c4a55;
+    --color-danger-0:#c0747e;
+
+    --color-container-light: #faf9fe;
+    --color-container-dark: #0d0e12;
+}
+
+/* Colores base (Tailwind) */
+@theme {  
+  --color-brand-primary: #ffffff;
+  --max-h-114: 28.5rem;
+}
+
+/*  💡 Si es solo utilidades simples → puede ir en cualquier CSS
+    💡 Si tiene pseudo-clases, variantes o combinaciones → ponelo dentro de @layer components */
+@layer components {
+  .kclink {
+    @apply inline-flex gap-1 justify-center items-center cursor-pointer select-none;
+  }
+  .kclink-p {
+    @apply text-md-light-primary;
+  }
+  .kclink-u {
+    @apply text-md-light-primary underline;
+  }
+  .dark .kclink-p {
+    @apply text-md-dark-primary;
+  }
+  .kclink:active {
+    @apply opacity-55;
+  }  
+}
+
+/* estilos globales finales para componentes */
+.k-btn{
+    @apply bg-[#1e554a] dark:text-[#f2f2f2] disabled:dark:bg-[#1d2b2a] disabled:dark:text-gray-500 disabled:bg-gray-200
+}
+.k-btn-tonal{
+    @apply bg-[#709890] dark:text-[#f2f2f2] disabled:dark:bg-[#1d2b2a] disabled:dark:text-gray-500 disabled:bg-gray-200
+}
+.k-tonal-text{
+    @apply text-[#0c3f35] dark:text-gray-600;
+}
+.k-title{
+    @apply text-[#0c3f35] dark:text-[#f2f2f2];
+}
+.k-bg{
+    /*@apply bg-[#faf9fe] dark:bg-[#0d0e12];*/
+    @apply material:bg-[#4a7d73] material:dark:bg-[#1d2b2a] ios:dark:bg-[#1d2b2a] material:text-[#faf9fe];
+}
+.k-bg-tonal{
+    /*@apply bg-[#faf9fe] dark:bg-[#0d0e12];*/
+    @apply bg-[#709890] dark:bg-[#1d2b2a] text-[#faf9fe];
+}
+.k-text{
+    /*@apply text-[#222222] dark:text-[#f2f2f2];*/
+    @apply text-[#222222] dark:text-[#f2f2f2];
+}
+.k-text-title{
+    @apply text-gray-600 dark:text-[#f2f2f2];
+}
+.k-panel-form{
+    @apply bg-[#eef5f6] dark:bg-[#0e1416];
+}
+.k-new{
+    @apply bg-[#49a68b] rounded-xl px-1 py-0.5 text-[#f2f2f2] text-xs w-fit;
+}
+.table-body{
+    @apply relative text-lg [&_tr_td]:whitespace-nowrap [&_tr_td]:p-2 [&>tr:nth-child(odd)]:bg-gray-100 dark:[&>tr:nth-child(odd)]:bg-mist-900 [&_tr_td:hover]:font-bold ;
+}
+.table-head{
+    @apply sticky top-0 z-10 uppercase bottom-0.5 opacity-100 [&_tr]:text-nowrap [&_tr]:mx-4 [&_tr_th]:border [&_tr_th]:border-gray-300 [&_tr_th]:p-2 [&_tr_th]:text-left;
+}
+.btn-sq-sm{
+    @apply w-8 p-0 m-0 shrink-0;
+}
+.tooltip{
+    @apply absolute bottom-full mb-0.5 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-sm rounded px-2 py-1 whitespace-nowrap z-50 transition-opacity duration-200;
+}
+.tooltip-triangle{
+    @apply w-0 h-0 border-l-6 border-r-6 border-t-12 border-l-transparent border-r-transparent border-t-gray-800  absolute top-6;
+}
+.tooltip-btn {
+    @apply text-sm mx-1 p-0.5 rounded focus:outline-none min-w-7 bg-[#709890] text-[#f2f2f2];
+}
+.tc{
+    @apply relative inline-block;
+}
+.segmented-btn{
+    @apply whitespace-nowrap shrink-0 w-fit capitalize;
+}
+.btn-sm {
+    /*@apply rounded-md px-2 py-0.5 transition-all duration-300;*/
+    @apply rounded-md transition-all duration-300;
+}
+.bg-hb-1{
+    background-color: #46A290;
+}
+.bg-hb-2{
+    background-color: #32685E;
+}
+.bg-hb-3{
+    background-color: #7DACA3;
+}
+
+
+/* base html estandar */
+html {
+  touch-action: pan-x pan-y!important;
+}
+html, body {
+  overscroll-behavior-y: none!important;
+  overscroll-behavior-x: none!important; 
+}
+svg {
+  transform: translateZ(0);
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+}
+
+
+/* animaciones */
+.atention{
+    @apply animate-pulse font-bold;
+    animation-iteration-count: 3;
+}
+
+.hithere{
+    animation: 1s forwards hithere;
+    animation-iteration-count: 1;
+}
+
+.hithere-2{
+    animation: 1s forwards hithere;
+    animation-iteration-count: 2;
+}
+
+.hithere-3{
+    animation: 1s forwards hithere;
+    animation-iteration-count: 3;
+}
+
+.upper-container div{
+    @apply w-fit;
+    text-transform: capitalize;
+}
+
+@keyframes hithere {
+    30% {
+        transform: scale(1.2)
+    }
+
+    40%,
+    60% {
+        transform: rotate(-20deg) scale(1.2)
+    }
+
+    50% {
+        transform: rotate(20deg) scale(1.2)
+    }
+
+    70% {
+        transform: rotate(0deg) scale(1.2)
+    }
+
+    to {
+        transform: scale(1)
+    }
+}
+
+.fade-up {
+  animation: fadeUp 0.4s ease forwards;
+}
+
+.fade-down {
+  animation: fadeDown 0.4s ease forwards;
+}
+
+.fade-up-section {
+  @apply mx-2 mt-4 mb-20;
+  animation: fadeUp 0.4s ease forwards;
+}
+
+@keyframes fadeUp {
+  0% {
+    transform: translate3d(0,40px,0);
+    opacity: 0;
+  }
+  100% {
+    transform: translate3d(0,0,0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeDown {
+  0% {
+    transform: translate3d(0,-40px,0);
+    opacity: 0;
+  }
+  100% {
+    transform: translate3d(0,0,0);
+    opacity: 1;
+  }
+}
+
+.horizontal-move{
+    animation: horizontalMove 4s infinite;
+}
+@keyframes horizontalMove {
+    0% {
+        transform: translateX(0);
+    }
+    50%{
+        transform: translateX(calc(100vw - 9rem));  
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.fade-right{
+animation-name: fadeRight;
+animation-duration: 0.4s;
+}
+@keyframes fadeRight {
+    0% {
+        transform: translate3d(-20px,0,0);
+        opacity: 0;
+    }
+    100% {
+        transform: translate3d(0,0,0);
+        opacity: 1;
+    }
+}
+.fade-left{
+animation-name: fadeLeft;
+animation-duration: 0.4s;
+}
+@keyframes fadeLeft {
+    0% {
+        transform: translate3d(20px,0,0);
+        opacity: 0;
+    }
+    100% {
+        transform: translate3d(0,0,0);
+        opacity: 1;
+    }
+}
+
+.pop-up {
+    animation-name: animate-pop;
+    animation-timing-function: cubic-bezier(0.26, 0.53, 0.74, 1.48);
+    animation-duration: 0.3s;
+}
+@keyframes animate-pop {
+    0% {
+        transform: scale(0.9, 0.9);
+    }
+    100% {
+        transform: scale(1, 1);
+    }
+}
