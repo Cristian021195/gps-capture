@@ -16,15 +16,23 @@ interface IProps {
 }
 */
 
-export const RutaForm = () => { // {relevamiento, setRelItem}: IProps
+interface IProps {
+    onSearch: (value: string) => void;
+}
+
+export const RutaForm = ({ onSearch }: IProps) => { // {relevamiento, setRelItem}: IProps
     const {formatMessage:tr} = useIntl();
     const { openBottomModal } = useBottomModal();
-    const updateParams = useUpdateSearchParams()
+    const updateParams = useUpdateSearchParams();
     
     return <div className="flex items-center">
         <List strongIos insetIos className="py-0 my-0 w-full">
                 <ListInput outline label={tr({id:'find'})} floatingLabel type="text" placeholder={tr({id:'find.holder'})}
-                    onChange={(e)=>{console.log(e.target.value);}}
+                    onChange={(e)=>{
+                        if(e.target.value.length >= 2){
+                            onSearch(e.target.value);
+                        }                         
+                    }}
                     media={
                         <SearchIcon width={20} height={20}/>
                     }

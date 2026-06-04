@@ -128,5 +128,7 @@
     "nuevo":"Nuevo",
     "route.new":"Nueva Ruta",
     "select.rel":"Seleccione un relevamiento",
-    "selected.rel":"Relevamiento seleccionado"
+    "selected.rel":"Relevamiento seleccionado",
+    "rel.error.required":"El relevamiento es requerido",
+    "find.ruta": "Buscar Rutas"
 }

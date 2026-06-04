@@ -42,7 +42,8 @@ export function useRelevamientoForm(id?: number) {
 
             if (id) {
                 await relevamientoService.update(id, {
-                    nombre
+                    nombre,
+                    key: TextHelper.from(nombre).slug().get()
                 });
             } else {
                 await relevamientoService.create({

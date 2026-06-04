@@ -12,7 +12,7 @@ export const relevamientoService = {
     },*/
     async create(data: {nombre:string, key:string}) {
         try {
-            return await db.relevamiento.add(data);
+            return await db.relevamiento.add(data as IRelevamiento);
         } catch (error) {
             if (error instanceof Dexie.ConstraintError) {
                 // eslint-disable-next-line preserve-caught-error

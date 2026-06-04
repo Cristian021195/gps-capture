@@ -2,6 +2,7 @@
  * Determina la medición de una entidad de relevamiento. Ej: empresas de bus, coches, turismo, etc.
  */
 export interface IRelevamiento {
+    
     /**
      * Identificador único local de indexedb 
      */
@@ -21,6 +22,7 @@ export interface IRelevamiento {
      * Fecha de creación en milisegundos
      */
     created_at?:number,
+
     /**
      * Fecha de actualización en milisegundos
      */
@@ -31,6 +33,7 @@ export interface IRelevamiento {
  * Determina la medición de una entidad de relevamiento. Ej: empresas de bus, coches, turismo, etc.
  */
 export interface IRuta {
+
     /**
      * Identificador único local de indexedb 
      */
@@ -63,6 +66,7 @@ export interface IRuta {
 }
 
 export interface IRegistroGPS {
+
     /**
      * Identificador único local de indexedb 
      */
@@ -113,6 +117,7 @@ export interface IRegistroGPS {
  * PENDIENTE DE REVISIÓN: es probable que no podamos hacer uso ya que los componentes codificados son diferentes. Ver librerias y demas
  */
 export interface IMapProvider {
+
     /**
      * Identificador único local de indexedb 
      */
@@ -145,6 +150,7 @@ export interface IMapProvider {
 }
 
 export interface IGeoProvider {
+
     /**
      * Identificador único local de indexedb 
      */
@@ -174,4 +180,16 @@ export interface IGeoProvider {
      * Fecha de creación en milisegundos
      */
     updated_at?:number
+}
+
+
+/**
+ * Es la union de las interfaces IRuta y IRelevamiento para la consulta de rutas
+ */
+export interface IRutaRelevamiento extends IRuta {
+
+    /**
+     * Nombre de relevamiento o clave foranea
+     */
+    relevamiento_nombre: string
 }

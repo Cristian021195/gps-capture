@@ -27,7 +27,11 @@ export const RelevamientoForm = ({relevamiento, setRelItem}: IProps) => {
                 
             />
 
-            <Button type="button" className="w-fit mx-auto" disabled={loading || !nombre} onClick={save}>
+            <Button type="button" className="w-fit mx-auto" disabled={loading || !nombre} onClick={()=>{
+                save();
+                setNombre("");
+                setRelItem(null);
+            }}>
                 {tr({id:'save.edit'})}
             </Button>
         </List>        

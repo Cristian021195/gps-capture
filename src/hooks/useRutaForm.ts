@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { relevamientoService } from "../services/relevamiento.service";
 import { TextHelper } from "../classes/TextHelper";
 import { useToast } from "../store/toast";
 import { useIntl } from "react-intl";
+import { rutaService } from "../services/ruta.service";
 
 export function useRutaForm(id?: number) {
     const [nombre, setNombre] = useState("");
+    const [relevamientoId, setRelevamientoId] = useState<number>();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const {openToast} = useToast();
@@ -24,10 +25,11 @@ export function useRutaForm(id?: number) {
         const load = async () => {
             setLoading(true);
 
-            const item = await relevamientoService.getById(id);
+            const item = await rutaService.getById(id);
 
             if (item) {
                 setNombre(item.nombre);
+                setRelevamientoId(item.relevamiento_id);
             }
 
             setLoading(false);
@@ -41,12 +43,17 @@ export function useRutaForm(id?: number) {
             setError(null);
 
             if (id) {
-                await relevamientoService.update(id, {
-                    nombre
+                await rutaService.update(id, {
+                    nombre,
+                    relevamiento_id: relevamientoId
                 });
             } else {
-                await relevamientoService.create({
+                if(!relevamientoId){
+                    throw new Error("REQUIRED_RELEVAMIENTO_KEY");
+                }
+                await rutaService.create({
                     nombre,
+                    relevamiento_id: relevamientoId,
                     key: TextHelper.from(nombre).slug().get()
                 });
                 setNombre('');
@@ -56,6 +63,14 @@ export function useRutaForm(id?: number) {
                 setError("duplicate");
                 return;
             }
+            if (err instanceof Error && err.message === "DUPLICATE_KEY") {
+                setError("duplicate");
+                return;
+            }
+            if (err instanceof Error && err.message === "REQUIRED_RELEVAMIENTO_KEY") {
+                setError("rel.error.required");
+                return;
+            }
             setError("broken");
         }
     };
@@ -63,6 +78,8 @@ export function useRutaForm(id?: number) {
     return {
         nombre,
         setNombre,
+        relevamientoId, 
+        setRelevamientoId,
         save,
         loading,
         error,

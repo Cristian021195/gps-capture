@@ -4,16 +4,26 @@ import { useIntl } from "react-intl";
 import { SearchIcon } from "../svg/FormIcons";
 import { useDBRelevamientoLike } from "../../hooks/useDBRelevamiento";
 import { useState } from "react";
-import type { IRelevamiento } from "../../interfaces/IEntidades";
+import type { IRelevamiento, IRuta } from "../../interfaces/IEntidades";
+import { useRutaForm } from "../../hooks/useRutaForm";
+//import { useRutaForm } from "../../hooks/useRutaForm";
 
 // isEditing ? <EditIcon/> : <SaveIcon/>
 // setNombre(e.target.value);
-export const NuevaRutaForm = () => {
+
+interface IProps {
+    ruta: IRuta | null;
+    setRutaItem: React.Dispatch<React.SetStateAction<IRuta | null>>;
+}
+
+export const NuevaRutaForm = ({ruta, setRutaItem}:IProps) => {
     const {formatMessage:tr} = useIntl();
     const [busqueda, setBusqueda] = useState("");
     const {relevamientos} = useDBRelevamientoLike(busqueda);
     const [seleccionado, setSeleccionado] = useState(relevamientos[0]);
-    console.log(relevamientos[0]);
+    const {nombre, setNombre, setRelevamientoId, save} = useRutaForm();
+    //const {relevamientoId} = useRutaForm(seleccionado?.id);
+
     return <div>
             <List strongIos insetIos className="py-0 my-0 w-full">
                 <List strongIos insetIos className="py-0 my-0 w-full">
@@ -41,6 +51,7 @@ export const NuevaRutaForm = () => {
                         const v = Number(e.target.value);
                         const sel = relevamientos.find(r => r.id === v) as IRelevamiento || null;
                         setSeleccionado(sel);
+                        setRelevamientoId(sel?.id ?? null);
                     }}
                     media={<LanguageIcon />}>
                         <option value="-1">{tr({id:'select.rel'})}</option>
@@ -55,18 +66,22 @@ export const NuevaRutaForm = () => {
             <div className="flex items-center justify-between">
                 <List strongIos insetIos className="py-0 my-0 w-full">
                     <ListInput outline label={tr({id:'route.title'})} floatingLabel type="text" placeholder={tr({id:'route.title'})}
-                        onChange={(e)=>{console.log(e.target.value);}}
+                        value={nombre}
+                        onChange={(e)=>{
+                            setNombre(e.target.value);
+                        }}
                         media={
                             <SaveIcon/>
                         }
                         clearButton={false}
                         onClear={()=>{
-                            // setNombre("");
-                            // setRelItem(null);
+                            setNombre("");
                         }}
                     />                
                 </List>
-                <button type="button" className="left-0 k-btn-tonal-alt p-2 rounded-sm me-4" disabled={!seleccionado} onClick={()=>{console.log("save")}}>
+                <button type="button" className="left-0 k-btn-tonal-alt p-2 rounded-sm me-4" disabled={!seleccionado || !nombre} onClick={()=>{
+                    save();
+                }}>
                     <SaveIcon width={24} height={24}/>
                 </button>
             </div>
