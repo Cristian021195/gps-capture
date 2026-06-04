@@ -109,8 +109,10 @@
     "reset.tour.info":"Se restablece la explicación sobre el uso de la aplicación en todas sus secciones",
     "show": "Mostrar",
     "ges.rel": "Gestión de Relevamientos",
+    "ges.title": "Titulo de relevamiento",
 
     "ges.route": "Gestión de Rutas",
+    "route.title": "Titulo de ruta",
 
     "ges.point": "Gestión de Puntos",
 
@@ -124,5 +126,7 @@
     "find.holder": "Ej: Tesa",
     "ruta.holder": "Ej: Tesa 38",
     "nuevo":"Nuevo",
-    "route.new":"Nuevo Ruta"
+    "route.new":"Nueva Ruta",
+    "select.rel":"Seleccione un relevamiento",
+    "selected.rel":"Relevamiento seleccionado"
 }

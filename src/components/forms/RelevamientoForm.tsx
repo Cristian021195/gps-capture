@@ -14,7 +14,7 @@ export const RelevamientoForm = ({relevamiento, setRelItem}: IProps) => {
     const { nombre, setNombre, save, loading, isEditing } = useRelevamientoForm(relevamiento?.id);
     return <div>
         <List strongIos insetIos>
-            <ListInput outline label="Titulo relevamiento" floatingLabel type="text" placeholder="Titulo relevamiento" value={nombre}
+            <ListInput outline label={tr({id:'ges.title'})} floatingLabel type="text" placeholder={tr({id:'ges.title'})} value={nombre}
                 onChange={(e)=>{setNombre(e.target.value);}}
                 media={
                     isEditing ? <EditIcon/> : <SaveIcon/>
@@ -24,7 +24,9 @@ export const RelevamientoForm = ({relevamiento, setRelItem}: IProps) => {
                     setNombre("");
                     setRelItem(null);
                 }}
+                
             />
+
             <Button type="button" className="w-fit mx-auto" disabled={loading || !nombre} onClick={save}>
                 {tr({id:'save.edit'})}
             </Button>

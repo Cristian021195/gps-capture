@@ -60,6 +60,9 @@
 .k-btn-tonal{
     @apply bg-[#709890] dark:text-[#f2f2f2] disabled:dark:bg-[#1d2b2a] disabled:dark:text-gray-500 disabled:bg-gray-200
 }
+.k-btn-tonal-alt{
+    @apply bg-[#709890] text-[#f2f2f2] disabled:dark:bg-[#1d2b2a] disabled:text-gray-500 disabled:bg-gray-200
+}
 .k-tonal-text{
     @apply text-[#0c3f35] dark:text-gray-600;
 }

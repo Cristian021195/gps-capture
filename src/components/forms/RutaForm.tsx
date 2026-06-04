@@ -1,9 +1,12 @@
-import { Button, List, ListInput } from "konsta/react"
+import { List, ListInput } from "konsta/react"
 import { useIntl } from "react-intl"
 // import { EditIcon, SaveIcon } from "../svg/UtilsIcon";
 //import type { IRelevamiento } from "../../interfaces/IEntidades";
 import { SearchIcon } from "../svg/FormIcons";
-import { useModal } from "../../store/modal";
+import { useBottomModal } from "../../store/bottom_modal";
+import { useUpdateSearchParams } from "../../hooks/useUpdateSearchParams";
+import { NuevaRutaForm } from "./RutaNuevaForm";
+import { AddlIcon } from "../svg/UtilsIcon";
 // import { useRutaForm } from "../../hooks/useRutaForm";
 
 /*
@@ -15,9 +18,11 @@ interface IProps {
 
 export const RutaForm = () => { // {relevamiento, setRelItem}: IProps
     const {formatMessage:tr} = useIntl();
-    const { openModal } = useModal();
-    return <div>
-        <List strongIos insetIos>
+    const { openBottomModal } = useBottomModal();
+    const updateParams = useUpdateSearchParams()
+    
+    return <div className="flex items-center">
+        <List strongIos insetIos className="py-0 my-0 w-full">
                 <ListInput outline label={tr({id:'find'})} floatingLabel type="text" placeholder={tr({id:'find.holder'})}
                     onChange={(e)=>{console.log(e.target.value);}}
                     media={
@@ -25,12 +30,13 @@ export const RutaForm = () => { // {relevamiento, setRelItem}: IProps
                     }
                     clearButton={false}
                     onClear={()=>{}}
-                />                
-            <Button type="button" className="w-fit mx-auto" disabled={false} onClick={()=>{
-                openModal({title:'route.new', content:<a>p</a>});
-            }}>
-                {tr({id:'nuevo'})}
-            </Button>
-        </List>        
+                />            
+        </List>   
+        <button type="button" className="w-fit mx-auto k-bg p-2 rounded-sm" disabled={false} onClick={()=>{
+            openBottomModal({title:tr({id:'route.new'}), children:<NuevaRutaForm/>});
+            updateParams({ emergent: "bottommodal"});
+        }}>
+            <AddlIcon width={24} height={24}/>
+        </button>
     </div>
 }
