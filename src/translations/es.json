@@ -110,6 +110,7 @@
     "show": "Mostrar",
     "ges.rel": "Gestión de Relevamientos",
     "ges.title": "Titulo de relevamiento",
+    "ges.search": "Buscar relevamiento",
 
     "ges.route": "Gestión de Rutas",
     "route.title": "Titulo de ruta",
@@ -130,5 +131,21 @@
     "select.rel":"Seleccione un relevamiento",
     "selected.rel":"Relevamiento seleccionado",
     "rel.error.required":"El relevamiento es requerido",
-    "find.ruta": "Buscar Rutas"
+    "find.ruta": "Buscar Rutas",
+    "no.changes": "No realizó cambios",
+    "changes": "Cambios realizados",
+    "empty": "Valores vacíos",
+    "location": "Ubicación",
+    "gps.on": "Ubicación activada",
+    "gps.off": "Ubicación desactivada",
+    "no.permission": "Sin permisos",
+    "gps.unsuported": "La Geolocalización no esta soportada",
+    "gps.missed": "Ubicación no disponible",
+    "timeout": "Tiempo de espera agotado",
+    "gps.error": "Error inesperado de ubicación",
+    "gps.granted":"Ubicación permitida",
+    "gps.prompt":"Solicitar ubicación",
+    "gps.denied":"Ubicación desactivada",
+    "gps.unknown":"Ubicación con error",
+    "gps.advice":"🛈 Recuerde revisar los permisos desde las configuraciones de su navegador"
 }

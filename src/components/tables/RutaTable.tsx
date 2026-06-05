@@ -5,6 +5,10 @@ import { useIntl } from "react-intl";
 import { TrashIcon } from "../svg/FormIcons";
 import { PencilIcon } from "../svg/UtilsIcon";
 import type { IRuta, IRutaRelevamiento } from "../../interfaces/IEntidades";
+import { useBottomModal } from "../../store/bottom_modal";
+import { useUpdateSearchParams } from "../../hooks/useUpdateSearchParams";
+import { NuevaRutaForm } from "../forms/RutaNuevaForm";
+import { RutaEditForm } from "../forms/RutaEditForm";
 
 interface IRutaTableProps {
   data: IRutaRelevamiento[],
@@ -13,6 +17,9 @@ interface IRutaTableProps {
 }
 
 export default function RutaTable({data, onDelete, onEdit}:IRutaTableProps) {
+  const [rutaItem, setRutaItem] = useState<IRuta | null>(null);
+  const { openBottomModal } = useBottomModal();
+  const updateParams = useUpdateSearchParams();
   const {formatMessage:tr} = useIntl();
   const [pagination, setPagination] = useState({
     pageIndex: 0,
@@ -45,7 +52,11 @@ export default function RutaTable({data, onDelete, onEdit}:IRutaTableProps) {
             <button
               type="button"
               className="btn-sm p-1 bg-yellow-200"
-              onClick={() => onEdit?.(row.original)}
+              onClick={() => {
+                onEdit?.(row.original);
+                openBottomModal({title:row.original.nombre, children:<RutaEditForm ruta={row.original} setRutaItem={setRutaItem}/>});
+                updateParams({ emergent: "bottommodal"});
+              }}
             >
               <PencilIcon/>
             </button>

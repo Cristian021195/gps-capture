@@ -9,6 +9,7 @@ import { BottomModalResetTour } from "../components/floating/BottomModalResetTou
 import { useUpdateSearchParams } from "../hooks/useUpdateSearchParams";
 import { getPlatform } from "../utils/navigator-data";
 import { _style } from "../utils/_styles";
+import { LocationConfigTrigger } from "../components/blocks/LocationConfigTrigger";
 
 const plataforma = getPlatform();
 
@@ -26,6 +27,7 @@ export const Config = () => {
 
   return (
     <PageNavbarContainer className="k-bg" bgClassName="k-bg" title={tr({id:'config'})} fallback_url="/" hash_eval="#share" left>
+      <LocationConfigTrigger/>
       <List strong className="bg-transparent dark:bg-transparent">
         <ListItem
           label
