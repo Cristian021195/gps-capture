@@ -1,5 +1,5 @@
 import { List, ListInput } from "konsta/react";
-import { LanguageIcon, SaveIcon } from "../svg/UtilsIcon";
+import { LanguageIcon, PinMapIcon, SaveIcon } from "../svg/UtilsIcon";
 import { useIntl } from "react-intl";
 import { SearchIcon } from "../svg/FormIcons";
 import { useDBRelevamientoLike } from "../../hooks/useDBRelevamiento";
@@ -42,7 +42,7 @@ export const NuevaRutaForm = ({ruta, setRutaItem}:IProps) => {
                         setSeleccionado(sel);
                         setRelevamientoId(sel?.id ?? null);
                     }}
-                    media={<LanguageIcon />}>
+                    media={<PinMapIcon />}>
                         <option value="-1">{tr({id:'select.rel'})}</option>
                         {
                             relevamientos.map(r => <option key={r.id} value={r.id}> {r.nombre}</option>)

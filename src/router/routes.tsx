@@ -12,6 +12,8 @@ import { Lang } from "../pages/Lang";
 import { NotFound } from "../pages/NotFound";
 import { Coordenadas } from "../pages/Coordenadas";
 import { Ruta } from "../pages/Ruta";
+import { Proveedores } from "../pages/Proovedores";
+import { GestionProveedores } from "../pages/GestionProveedores";
 
 
 export const router = createBrowserRouter([
@@ -36,7 +38,9 @@ export const router = createBrowserRouter([
           { path: "/instructivo", element: <Instructivo/> },
           { path: "/lang", element: <Lang/> },
           { path: "/ruta", element: <Ruta/> },
-          { path: "/coordenadas", element: <Coordenadas/> }
+          { path: "/coordenadas", element: <Coordenadas/> },
+          { path: "/proveedores", element: <Proveedores/> },
+          { path: "/gestion-servicios", element: <GestionProveedores/> }
         ],
       }
     ],

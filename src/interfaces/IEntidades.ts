@@ -90,17 +90,22 @@ export interface IRegistroGPS {
     /**
      * Identificador de IGeoProvider (local) o clave foranea
      */
-    geo_provider_id: number,
+    geo_provider_id?: number,
 
     /**
      * Texto de lo que nos devuelve la API del GeoProvider, generalmente calle y número juntos. Ej: San Luis 1216
      */
-    descripcion: string,
+    formatted_address?: string,
+
+    /**
+     * Texto que agregamos localmente para uso o identificación interna de la app 
+     */
+    descripcion?: string,
 
     /**
      * Identificador Unico según el proveedor que responde por API. Ej: Google: place_id, OSM: osm_type+"-"+osm_id, etc.
      */
-    place_id: string,
+    place_id?: string,
     
     /**
      * Fecha de creación en milisegundos
@@ -167,9 +172,14 @@ export interface IGeoProvider {
     key: string,//slug
     
     /**
-     * api key obtenida del proveedor de servicio de geocodificación
+     * api key del proveedor de geocodificación (no todos los provedores usan una, ej Open St. Map)
      */
-    api_key: string,
+    api_key?: string,
+
+    /**
+     * Normalizamos los proveedores mas comunes, agregar mas a futuro
+     */
+    provider_type: 'google' | 'osm' | 'mapbox' | 'bing'
     
     /**
      * Fecha de creación en milisegundos

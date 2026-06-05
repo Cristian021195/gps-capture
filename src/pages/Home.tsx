@@ -35,9 +35,9 @@ export const Home = () => {
         <MainDivTitle title={tr({id:'ges.rel'})} className="space-y-2 m-4">
             <RelevamientoForm relevamiento={relItem} setRelItem={setRelItem}/>
         </MainDivTitle>
-        <MainDivTitle title={tr({id:'departure'})} className="space-y-2 m-4">
+        <div className="m-4 mt-4">
             <RelevamientoTable data={relevamientos} onDelete={handleDelete} onEdit={setRelItem}/>
-        </MainDivTitle>
+        </div>
         <MainBlockTitle className="space-y-1" title={tr({id:'home'})}>
             <p>hola</p>
         </MainBlockTitle>

@@ -1,17 +1,19 @@
 import Dexie from 'dexie';
 import type { Table } from "dexie";
-import type { IRelevamiento, IRuta } from '../interfaces/IEntidades';
+import type { IGeoProvider, IRelevamiento, IRuta } from '../interfaces/IEntidades';
 
 
 export class GpsCaptureDexie extends Dexie {
   relevamiento!: Table<IRelevamiento>;
   ruta!: Table<IRuta>;
+  proveedor!: Table<IGeoProvider>;  
 
   constructor() {
     super('gps-capture');
     this.version(1).stores({
         relevamiento: "++id, nombre, &key, created_at, updated_at",
-        ruta: "++id, relevamiento_id, nombre, &key, created_at, updated_at"
+        ruta: "++id, relevamiento_id, nombre, &key, created_at, updated_at",
+        proveedor: "++id, nombre, &key, api_key, provider_type, updated_at, created_at"        
     });
 
     // Relevamiento
@@ -32,6 +34,17 @@ export class GpsCaptureDexie extends Dexie {
       obj.updated_at = now;
     });
     this.ruta.hook("updating", (modifications: Partial<IRuta>) => {
+      if ("created_at" in modifications) delete modifications.created_at;
+      modifications.updated_at = Date.now();
+    });
+
+    // Proveedor
+    this.proveedor.hook("creating", (_: unknown, obj: IGeoProvider) => {
+      const now = Date.now();
+      obj.created_at = now;
+      obj.updated_at = now;
+    });
+    this.proveedor.hook("updating", (modifications: Partial<IRuta>) => {
       if ("created_at" in modifications) delete modifications.created_at;
       modifications.updated_at = Date.now();
     });
