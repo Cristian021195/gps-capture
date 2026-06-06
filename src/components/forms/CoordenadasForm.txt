@@ -1,0 +1,123 @@
+import { Button, Card, List, ListInput, Preloader } from "konsta/react"
+import { useDBRuta } from "../../hooks/useDBRuta";
+import { RouteIcon } from "../svg/FormIcons";
+import { useDBProveedor } from "../../hooks/useDBProveedor";
+import { BoxSeamIcon, PencilIcon } from "../svg/UtilsIcon";
+import { useIntl } from "react-intl";
+import { useGeolocation } from "../../hooks/useGeolocation";
+import { useEffect } from "react";
+import { CoordenadasResultCard } from "../ui/CoordenadasResultCard";
+
+export const CoordenadasForm = () => {
+    const { rutas, rutaSeleccionada, setRutaSeleccionada } = useDBRuta();
+    const {formatMessage:tr} = useIntl();
+    const { proveedores, proveedorSeleccionado, getProveedor } = useDBProveedor();
+    const {location, error, loading, requestLocation} = useGeolocation();
+
+    useEffect(()=>{
+        if(rutas && proveedores){
+            setRutaSeleccionada(rutas ? rutas[0] : null);
+            getProveedor(proveedores[0]?.id);
+        }        
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[rutas, proveedores]);
+
+    useEffect(()=>{
+        console.log(location);
+    },[location]);
+
+    return (
+        <div>
+            <List strongIos insetIos className="py-0 my-0 w-full">
+                <ListInput
+                    type="select"
+                    dropdown
+                    colors={{bgMaterial:'k-panel-form rounded-b-xl', outlineBorderMaterial:'border-none'}}
+                    value={rutaSeleccionada?.id}
+                    name="ruta"
+                    onChange={(e)=>{
+                        const _ruta = rutas?.find(r=>r.id === Number(e.target.value));
+                        setRutaSeleccionada(_ruta ?? null);
+                    }}
+                    media={<RouteIcon/>}>{
+                        rutas?.map(r => <option key={r.id} value={r.id}> {r.nombre}</option>)
+                    }
+                </ListInput>
+                <ListInput
+                    type="select"
+                    dropdown
+                    colors={{bgMaterial:'k-panel-form rounded-b-xl', outlineBorderMaterial:'border-none'}}
+                    value={proveedorSeleccionado ?? undefined}
+                    name="proveedor"
+                    onChange={(e)=>{
+                        getProveedor(Number(e.target.value));
+                    }}
+                    media={<BoxSeamIcon/>}>{
+                        proveedores?.map(r => <option key={r.id} value={r.id}> {r.nombre}</option>)
+                    }
+                </ListInput>
+                <ListInput outline label={tr({id:'desc'})} floatingLabel type="text" placeholder={tr({id:'desc.ej'})} 
+                    
+                    onChange={(e)=>{
+                        console.log(e.target.value);}
+                    }
+                    media={
+                        <PencilIcon/>
+                    }
+                    clearButton={false}
+                    onClear={()=>{
+                        console.log('a')
+                    }}                
+                />
+            </List>
+            <div>
+                <CoordenadasResultCard/>
+                <Card outline className={!location ? 'invisible' : ''}> {JSON.stringify(location)} </Card>
+            </div>
+            <div className="flex justify-between items-center content-center mx-4">
+                <Button className="w-fit">{tr({id:'export.csv'})}</Button>
+                { 
+                    loading 
+                    ? <div className="w-32 flex items-center content-center justify-center">
+                        <Preloader/>
+                    </div>
+                    : <Button className="w-fit" onClick={
+                        ()=>{
+                            requestLocation();
+                        }
+                    }>
+                        {tr({id:'gps.get'})}
+                    </Button>
+                }
+                
+            </div>
+        </div>
+    )
+}
+
+/* 
+id: number,
+ruta_id: number,
+latitud: number,
+longitud: number,
+geo_provider_id?: number,
+formatted_address?: string,
+descripcion?: string,
+place_id?: string,
+created_at: number,
+updated_at: number
+
+<ListInput
+    type="select"
+    dropdown
+    colors={{bgMaterial:'k-panel-form rounded-b-xl', outlineBorderMaterial:'border-none'}}
+    value={providerType}
+    name="relevamiento"
+    onChange={(e)=>{
+        setProviderType(e.target.value)
+    }}
+    media={<MapLayoutIcon/>}>{
+        proveedores_default.map(r => <option key={r.id} value={r.id}> {r.nombre} ({r.service})</option>)
+    }
+</ListInput>
+*/

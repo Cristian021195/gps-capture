@@ -8,6 +8,7 @@ export interface UseGeolocationReturn {
   loading: boolean;
   error: string | null;
   requestLocation: () => void;
+  requestSingleLocation: () => Promise<GeolocationCoordinates>;
 }
 
 export interface IGeoService {

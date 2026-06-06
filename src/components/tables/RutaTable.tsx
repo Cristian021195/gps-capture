@@ -3,22 +3,25 @@ import { type ColumnDef, flexRender, getCoreRowModel, getPaginationRowModel, use
 import { Button } from "konsta/react";
 import { useIntl } from "react-intl";
 import { TrashIcon } from "../svg/FormIcons";
-import { PencilIcon } from "../svg/UtilsIcon";
+import { CSVDownloadIcon, PencilIcon } from "../svg/UtilsIcon";
 import type { IRuta, IRutaRelevamiento } from "../../interfaces/IEntidades";
 import { useBottomModal } from "../../store/bottom_modal";
 import { useUpdateSearchParams } from "../../hooks/useUpdateSearchParams";
-import { NuevaRutaForm } from "../forms/RutaNuevaForm";
 import { RutaEditForm } from "../forms/RutaEditForm";
+import { useModal } from "../../store/modal";
+import { ModalBorrarBase } from "../floating/ModalBorrarBase";
+import { ModalExportarCSV } from "../floating/ModalExportarCSV";
 
 interface IRutaTableProps {
   data: IRutaRelevamiento[],
   onEdit?: (item: IRuta) => void,
-  onDelete?: (item: IRuta) => void
+  onDelete?: (item: IRuta) => void,
+  onExport?: (item: IRuta, os: 'linux' | 'ms') => void,
 }
 
-export default function RutaTable({data, onDelete, onEdit}:IRutaTableProps) {
-  const [rutaItem, setRutaItem] = useState<IRuta | null>(null);
+export default function RutaTable({data, onDelete, onEdit, onExport}:IRutaTableProps) {
   const { openBottomModal } = useBottomModal();
+  const { openModal } = useModal();
   const updateParams = useUpdateSearchParams();
   const {formatMessage:tr} = useIntl();
   const [pagination, setPagination] = useState({
@@ -43,22 +46,51 @@ export default function RutaTable({data, onDelete, onEdit}:IRutaTableProps) {
           <div className="flex gap-2 justify-evenly">
             <button
               type="button"
-              className="btn-sm p-1 bg-red-300"
-              onClick={() => onDelete?.(row.original)}
+              className="btn-sm p-1 bg-red-400 text-white"
+              onClick={() => {
+                openModal({
+                    title:tr({id:'ruta.delete.title'}),
+                    content: <ModalBorrarBase cb={()=>{onDelete?.(row.original)}} desc={tr({id:"ruta.delete.desc"})}/>
+                });
+                updateParams({ emergent: "modal"});
+              }}
             >
               <TrashIcon/>
             </button>
 
             <button
               type="button"
-              className="btn-sm p-1 bg-yellow-200"
+              className="btn-sm p-1 bg-yellow-400 text-white"
               onClick={() => {
                 onEdit?.(row.original);
-                openBottomModal({title:row.original.nombre, children:<RutaEditForm ruta={row.original} setRutaItem={setRutaItem}/>});
+                openBottomModal({title:row.original.nombre, children:<RutaEditForm ruta={row.original}/>});
                 updateParams({ emergent: "bottommodal"});
               }}
             >
               <PencilIcon/>
+            </button>
+            <button
+              type="button"
+              className="btn-sm p-1 bg-blue-400 text-white"
+              onClick={() => {
+                openModal({
+                  title:tr({id:'csv.export'}), 
+                  content: <ModalExportarCSV 
+                      desc={tr({id:'csv.export.desc'})} 
+                      cba={()=>{
+                        //exportCSVRegistroGPS(coordenadas as IExportRegistroGPS[], 'linux')
+                        onExport?.(row.original, 'linux');
+                      }}
+                      cbb={()=>{
+                        //exportCSVRegistroGPS(coordenadas as IExportRegistroGPS[], 'ms')
+                        onExport?.(row.original, 'ms');
+                      }}
+                  />
+                });
+                updateParams({ emergent: "modal"});                
+              }}
+            >
+              <CSVDownloadIcon/>
             </button>
           </div>
         ),

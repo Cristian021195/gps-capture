@@ -4,7 +4,7 @@ import { useIntl } from "react-intl";
 import { SearchIcon } from "../svg/FormIcons";
 import { useDBRelevamientoLike } from "../../hooks/useDBRelevamiento";
 import { useEffect, useState } from "react";
-import type { IRelevamiento, IRuta, IRutaRelevamiento } from "../../interfaces/IEntidades";
+import type { IRelevamiento, IRutaRelevamiento } from "../../interfaces/IEntidades";
 import { useRutaForm } from "../../hooks/useRutaForm";
 import { useToast } from "../../store/toast";
 import { useNavigate } from "react-router-dom";
@@ -14,11 +14,10 @@ import { useNavigate } from "react-router-dom";
 // setNombre(e.target.value);
 
 interface IProps {
-    ruta: IRutaRelevamiento | null;
-    setRutaItem: React.Dispatch<React.SetStateAction<IRuta | null>>;
+    ruta: IRutaRelevamiento | null
 }
 
-export const RutaEditForm = ({ruta, setRutaItem}:IProps) => {
+export const RutaEditForm = ({ruta}:IProps) => {
     const {formatMessage:tr} = useIntl();
     const [busqueda, setBusqueda] = useState("");
     const {relevamientos} = useDBRelevamientoLike(busqueda);
@@ -58,7 +57,7 @@ export const RutaEditForm = ({ruta, setRutaItem}:IProps) => {
                             relevamientos.map(r => <option key={r.id} value={r.id}> {r.nombre}</option>)
                         }
                 </ListInput>
-                <List strongIos insetIos className="py-0 my-0 w-full">
+                <List strongIos insetIos className="py-0 my-0 w-full hidden">
                     <ListInput outline label={tr({id:'ges.title'})} floatingLabel type="text" placeholder={tr({id:'ges.title'})}
                         onChange={(e)=>{
                             setBusqueda(e.target.value);
@@ -98,16 +97,7 @@ export const RutaEditForm = ({ruta, setRutaItem}:IProps) => {
                         }}
                     />                
                 </List>
-                <button type="button" className="left-0 k-btn-tonal-alt p-2 rounded-sm me-4" disabled={false} onClick={()=>{
-                    /*
-                    if(ruta?.relevamiento_id === relevamientoId && ruta?.nombre === nombre){
-                        openToast({text:tr({id:'no.changes'})});
-                    }else if(!relevamientoId && nombre === ''){
-                        openToast({text:tr({id:'empty'})});
-                    }else{
-                        openToast({text:tr({id:'changes'})});
-                    }
-                    */                   
+                <button type="button" className="left-0 k-btn-tonal-alt p-2 rounded-sm me-4" disabled={false} onClick={()=>{         
                     save(()=>{
                         openToast({text:tr({id:'changes'})});
                         navigate(-1);

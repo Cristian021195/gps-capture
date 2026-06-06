@@ -1,4 +1,4 @@
-import { MainBlockTitle, MainDivTitle } from "../components/blocks/MainBlockTitle"
+import { MainDivTitle } from "../components/blocks/MainBlockTitle"
 import { PageNavbarContainer } from "../components/layout/PageNavbarContainer";
 import { useIntl } from "react-intl";
 import { IPhoneUserAlert } from "../components/blocks/IPhoneUserAlert";
@@ -10,6 +10,9 @@ import RelevamientoTable from "../components/tables/RelevamientoTable";
 import type { IRelevamiento } from "../interfaces/IEntidades";
 import { relevamientoService } from "../services/relevamiento.service";
 import { useState } from "react";
+import { useModal } from "../store/modal";
+import { useUpdateSearchParams } from "../hooks/useUpdateSearchParams";
+import { ModalBorrarRelevamiento } from "../components/floating/ModalBorrarRelevamiento";
 
 if(localStorage.getItem('iphone_advice') === null){
     localStorage.setItem('iphone_advice', '1')
@@ -21,13 +24,23 @@ export const Home = () => {
     const {formatMessage:tr} = useIntl();
     const {relevamientos} = useDBRelevamiento();
     const [relItem, setRelItem] = useState<IRelevamiento | null>(null);
+    const {openModal} = useModal();
+    const updateParams = useUpdateSearchParams();
+    //openBottomModal({title:row.original.nombre, children:<RutaEditForm ruta={row.original} setRutaItem={setRutaItem}/>});
+    //updateParams({ emergent: "bottommodal"});
     
     const handleDelete = async (relevamiento: IRelevamiento) => {
         if (!relevamiento.id) return;
-    
-        await relevamientoService.delete(
-          relevamiento.id
-        );
+        updateParams({ emergent: "modal"});
+        openModal({
+            title:tr({id:'rel.delete.title'}), 
+            content: <ModalBorrarRelevamiento 
+            cb={async () => {
+                await relevamientoService.delete(
+                  relevamiento.id
+                );
+            }}/> 
+        });
     };
 
     return <PageNavbarContainer className="k-bg" bgClassName="k-bg" title="GPS Capture" fallback_url="/" hash_eval="#share" right={<MenuButton/>}>
@@ -36,10 +49,10 @@ export const Home = () => {
             <RelevamientoForm relevamiento={relItem} setRelItem={setRelItem}/>
         </MainDivTitle>
         <div className="m-4 mt-4">
-            <RelevamientoTable data={relevamientos} onDelete={handleDelete} onEdit={setRelItem}/>
-        </div>
-        <MainBlockTitle className="space-y-1" title={tr({id:'home'})}>
-            <p>hola</p>
-        </MainBlockTitle>
+            <RelevamientoTable data={relevamientos ?? []} onDelete={handleDelete} onEdit={setRelItem}/>
+        </div>        
     </PageNavbarContainer>
 }
+/* <MainBlockTitle className="space-y-1" title={tr({id:'home'})}>
+            <p>hola</p>
+        </MainBlockTitle> */

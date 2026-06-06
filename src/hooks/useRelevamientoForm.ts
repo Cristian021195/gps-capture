@@ -45,11 +45,13 @@ export function useRelevamientoForm(id?: number) {
                     nombre,
                     key: TextHelper.from(nombre).slug().get()
                 });
+                openToast({text:tr({id:'rel.updated'})})
             } else {
                 await relevamientoService.create({
                     nombre,
                     key: TextHelper.from(nombre).slug().get()
                 });
+                openToast({text:tr({id:'rel.created'})})
                 setNombre('');
             }
         } catch (err) {

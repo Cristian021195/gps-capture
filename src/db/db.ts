@@ -1,19 +1,21 @@
 import Dexie from 'dexie';
 import type { Table } from "dexie";
-import type { IGeoProvider, IRelevamiento, IRuta } from '../interfaces/IEntidades';
+import type { IGeoProvider, IRegistroGPS, IRelevamiento, IRuta } from '../interfaces/IEntidades';
 
 
 export class GpsCaptureDexie extends Dexie {
   relevamiento!: Table<IRelevamiento>;
   ruta!: Table<IRuta>;
-  proveedor!: Table<IGeoProvider>;  
+  proveedor!: Table<IGeoProvider>;
+  coordenadas!: Table<IRegistroGPS>;
 
   constructor() {
     super('gps-capture');
-    this.version(1).stores({
+    this.version(2).stores({
         relevamiento: "++id, nombre, &key, created_at, updated_at",
         ruta: "++id, relevamiento_id, nombre, &key, created_at, updated_at",
-        proveedor: "++id, nombre, &key, api_key, provider_type, updated_at, created_at"        
+        proveedor: "++id, nombre, &key, api_key, provider_type, updated_at, created_at",
+        coordenadas: "++id, ruta_id, [ruta_id+created_at], [ruta_id+id], latitud, longitud, formatted_address, descripcion",
     });
 
     // Relevamiento

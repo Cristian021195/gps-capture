@@ -8,9 +8,9 @@ import { proveedores_default } from "../utils/proveedores";
 const default_prov = proveedores_default[0]?.service || "google";
 
 export function useProveedorForm(id?: number) {
-    const [nombre, setNombre] = useState("");
-    const [apiKey, setApiKey] = useState("");
-    const [providerType, setProviderType] = useState(default_prov);
+    const [nombre, setNombre] = useState<string | undefined>("");
+    const [apiKey, setApiKey] = useState<string | undefined>("");
+    const [providerType, setProviderType] = useState<string | undefined>(default_prov);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const {openToast} = useToast();
@@ -33,6 +33,8 @@ export function useProveedorForm(id?: number) {
 
             if (item) {
                 setNombre(item.nombre);
+                setApiKey(item.api_key);
+                setProviderType(item.provider_type);
             }
 
             setLoading(false);
@@ -50,14 +52,15 @@ export function useProveedorForm(id?: number) {
                 await proveedorService.update(id, {
                     api_key:apiKey,
                     nombre,
-                    key: TextHelper.from(nombre).slug().get()
+                    key: TextHelper.from(nombre+"").slug().get()
                 });
+                reset();
             } else {
                 await proveedorService.create({
-                    api_key:apiKey,
-                    nombre,
-                    provider_type: providerType,
-                    key: TextHelper.from(nombre).slug().get()
+                    api_key:apiKey+"",
+                    nombre:nombre+"",
+                    provider_type: providerType+"",
+                    key: TextHelper.from(nombre+"").slug().get()
                 });
                 reset();
             }

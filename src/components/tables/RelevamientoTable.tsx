@@ -32,7 +32,7 @@ export default function RelevamientoTable({data, onDelete, onEdit}:IRelevamiento
           <div className="flex gap-2 justify-evenly">
             <button
               type="button"
-              className="btn-sm p-1 bg-red-300"
+              className="btn-sm p-1 bg-red-400 text-white"
               onClick={() => onDelete?.(row.original)}
             >
               <TrashIcon/>
@@ -40,7 +40,7 @@ export default function RelevamientoTable({data, onDelete, onEdit}:IRelevamiento
 
             <button
               type="button"
-              className="btn-sm p-1 bg-yellow-200"
+              className="btn-sm p-1 bg-yellow-400 text-white"
               onClick={() => onEdit?.(row.original)}
             >
               <PencilIcon/>

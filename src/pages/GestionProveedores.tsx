@@ -1,4 +1,3 @@
-import { MainDivTitle } from "../components/blocks/MainBlockTitle"
 import { PageNavbarContainer } from "../components/layout/PageNavbarContainer";
 import { useIntl } from "react-intl";
 import { IPhoneUserAlert } from "../components/blocks/IPhoneUserAlert";
@@ -17,16 +16,16 @@ const standalone = validateDisplayMode('standalone');
 
 export const GestionProveedores = () => {    
     const {formatMessage:tr} = useIntl();
-    const {proveedores} = useDBProveedor();
+    const {proveedores, proveedorSeleccionado, deleteProveedor, getProveedor, unsetProveedor} = useDBProveedor();
 
     return <PageNavbarContainer className="k-bg" bgClassName="k-bg" title={tr({id:'proveedores.gestion'})} fallback_url="/" hash_eval="#share" right={<MenuButton/>}>
         { !standalone && <IPhoneUserAlert/> }
         <LocationConfigAdvice/>
         <div className="mx-4">
-            <GestionProveedorForm/>
+            <GestionProveedorForm proveedor={proveedorSeleccionado} unsetProveedor={unsetProveedor}/>
         </div>
         <div className="m-4 mt-8">
-            <GestionProveedoresTable data={proveedores}/>
+            <GestionProveedoresTable data={proveedores} onDelete={deleteProveedor} getToEdit={getProveedor} />
         </div>
     </PageNavbarContainer>
 }

@@ -8,11 +8,11 @@ import { PencilIcon } from "../svg/UtilsIcon";
 
 interface IGeoProviderTableProps {
   data: IGeoProvider[],
-  onEdit?: (item: IGeoProvider) => void,
-  onDelete?: (item: IGeoProvider) => void
+  onDelete: (id: number) => Promise<void>;
+  getToEdit: (id: number) => void | Promise<void>;
 }
 
-export default function GestionProveedoresTable({data, onDelete, onEdit}:IGeoProviderTableProps) {
+export default function GestionProveedoresTable({data, onDelete, getToEdit}:IGeoProviderTableProps) {
   const {formatMessage:tr} = useIntl();
   const [pagination, setPagination] = useState({
     pageIndex: 0,
@@ -32,16 +32,16 @@ export default function GestionProveedoresTable({data, onDelete, onEdit}:IGeoPro
           <div className="flex gap-2 justify-evenly">
             <button
               type="button"
-              className="btn-sm p-1 bg-red-300"
-              onClick={() => onDelete?.(row.original)}
+              className="btn-sm p-1 bg-red-400 text-white"
+              onClick={() => onDelete?.(row.original.id)}
             >
               <TrashIcon/>
             </button>
 
             <button
               type="button"
-              className="btn-sm p-1 bg-yellow-200"
-              onClick={() => onEdit?.(row.original)}
+              className="btn-sm p-1 bg-yellow-400 text-white"
+              onClick={() => getToEdit?.(row.original.id)}
             >
               <PencilIcon/>
             </button>

@@ -15,7 +15,9 @@ export const RelevamientoForm = ({relevamiento, setRelItem}: IProps) => {
     return <div>
         <List strongIos insetIos>
             <ListInput outline label={tr({id:'ges.title'})} floatingLabel type="text" placeholder={tr({id:'ges.title'})} value={nombre}
-                onChange={(e)=>{setNombre(e.target.value);}}
+                onChange={(e)=>{
+                    setNombre(e.target.value);
+                }}
                 media={
                     isEditing ? <EditIcon/> : <SaveIcon/>
                 }
@@ -24,10 +26,9 @@ export const RelevamientoForm = ({relevamiento, setRelItem}: IProps) => {
                     setNombre("");
                     setRelItem(null);
                 }}
-                
             />
 
-            <Button type="button" className="w-fit mx-auto" disabled={loading || !nombre} onClick={()=>{
+            <Button type="button" className="w-fit mx-auto" disabled={loading || (!nombre || nombre.length <= 3)} onClick={()=>{
                 save();
                 setNombre("");
                 setRelItem(null);

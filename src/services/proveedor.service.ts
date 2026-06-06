@@ -7,6 +7,10 @@ export const proveedorService = {
         return db.proveedor.get(id);
     },
 
+    async getAll() {
+        return db.proveedor.toArray();
+    },
+
     async create(data: {nombre:string, key:string, api_key:string, provider_type:string}) {
         try {
             return await db.proveedor.add(data as IGeoProvider);

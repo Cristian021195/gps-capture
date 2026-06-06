@@ -3,12 +3,17 @@ import { EditIcon, MapLayoutIcon, SaveIcon } from "../svg/UtilsIcon";
 import { proveedores_default } from "../../utils/proveedores";
 import { useIntl } from "react-intl";
 import { useProveedorForm } from "../../hooks/useProveedorForm";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import type { IGeoProvider } from "../../interfaces/IEntidades";
 
-export const GestionProveedorForm = () => {
+interface IProps {
+    proveedor: IGeoProvider | null,
+    unsetProveedor: () => Promise<void>
+}
+
+export const GestionProveedorForm = ({proveedor, unsetProveedor}:IProps) => {
     const {formatMessage:tr} = useIntl();
-    const [proveedorSeleccionado, setProveedorSeleccionado] = useState();
-    const { nombre, setNombre, apiKey, setApiKey, providerType, setProviderType, save, loading, error, isEditing } = useProveedorForm(proveedorSeleccionado);
+    const { nombre, setNombre, apiKey, setApiKey, providerType, setProviderType, save, loading, error, isEditing } = useProveedorForm(proveedor?.id);
 
     useEffect(()=>{
         if(proveedores_default.length > 0){
@@ -31,7 +36,8 @@ export const GestionProveedorForm = () => {
                     proveedores_default.map(r => <option key={r.id} value={r.id}> {r.nombre} ({r.service})</option>)
                 }
             </ListInput>
-            <ListInput outline label={tr({id:'proveedor.reg'})} floatingLabel type="text" placeholder={tr({id:'proveedor.ej'})} value={nombre}
+            <ListInput outline label={tr({id:'proveedor.reg'})} floatingLabel type="text" placeholder={tr({id:'proveedor.ej'})} 
+                value={nombre}
                 onChange={(e)=>{setNombre(e.target.value);}}
                 media={
                     isEditing ? <EditIcon/> : <SaveIcon/>
@@ -41,8 +47,11 @@ export const GestionProveedorForm = () => {
                     setNombre("");
                 }}                
             />
-            <ListInput outline label={tr({id:'api.key'})} floatingLabel type="text" placeholder={tr({id:'api.ej'})} value={apiKey}
-                onChange={(e)=>{setApiKey(e.target.value.trim());}}
+            <ListInput outline label={tr({id:'api.key'})} floatingLabel type="text" placeholder={tr({id:'api.ej'})} 
+                value={apiKey}
+                onChange={(e)=>{
+                    setApiKey(e.target.value.trim());}
+                }
                 media={
                     isEditing ? <EditIcon/> : <SaveIcon/>
                 }
@@ -51,14 +60,22 @@ export const GestionProveedorForm = () => {
                     setApiKey("");
                 }}                
             />
-            <Button type="button" className="w-fit mx-auto" disabled={false} onClick={()=>{ // loading || !nombre
-                save();
-                // setNombre("");
-                // setRelItem(null);
-                console.log({nombre, apiKey, providerType, proveedorSeleccionado})
-            }}>
-                {tr({id:'save.edit'})}
-            </Button>
+            <div className="flex gap 4">
+                <Button type="button" className="w-fit mx-auto" disabled={false} onClick={()=>{ // loading || !nombre
+                    save();
+                    unsetProveedor();
+                }}>
+                    {tr({id:'save.edit'})}
+                </Button>            
+                <Button type="button" className="w-fit mx-auto k-btn-tonal" disabled={false} onClick={()=>{
+                    unsetProveedor();
+                    setNombre("");
+                    setApiKey("");
+                    setProviderType("");
+                }}>
+                    {tr({id:'clear'})}
+                </Button>
+            </div>
         </List>
     )
 }

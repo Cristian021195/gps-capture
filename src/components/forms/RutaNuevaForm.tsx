@@ -48,7 +48,7 @@ export const NuevaRutaForm = ({ruta, setRutaItem}:IProps) => {
                             relevamientos.map(r => <option key={r.id} value={r.id}> {r.nombre}</option>)
                         }
                 </ListInput>
-                <List strongIos insetIos className="py-0 my-0 w-full">
+                <List strongIos insetIos className="py-0 my-0 w-full hidden">
                     <ListInput outline label={tr({id:'ges.title'})} floatingLabel type="text" placeholder={tr({id:'ges.title'})}
                         onChange={(e)=>{
                             setBusqueda(e.target.value);
@@ -63,7 +63,7 @@ export const NuevaRutaForm = ({ruta, setRutaItem}:IProps) => {
                         }}
                     />                
                 </List>                
-                <div className={seleccionado ? "mx-4 px-2" : "hidden"}>
+                <div className={seleccionado ? "mx-4 px-2 my-2" : "hidden"}>
                     <b>{tr({id:'selected.rel'})}:</b> {seleccionado?.nombre}
                 </div>
             </List>
@@ -83,9 +83,9 @@ export const NuevaRutaForm = ({ruta, setRutaItem}:IProps) => {
                         }}
                     />                
                 </List>
-                <button type="button" className="left-0 k-btn-tonal-alt p-2 rounded-sm me-4" disabled={!seleccionado || !nombre} onClick={()=>{
+                <button type="button" className="left-0 k-btn-tonal-alt p-2 rounded-sm me-4" disabled={!seleccionado || (!nombre || nombre.length < 3)} onClick={()=>{
                     save(()=>{
-                        openToast({text:tr({id:'changes'})});
+                        openToast({text:tr({id:'ruta.create.ok'})});
                         navigate(-1);
                     });
                 }}>

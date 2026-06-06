@@ -6,9 +6,46 @@ export const useGeolocation = (): UseGeolocationReturn => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const requestSingleLocation = (): Promise<GeolocationCoordinates> => {
+    return new Promise((resolve, reject) => {
+      if (!navigator.geolocation) {
+        reject(new Error("gps.unsupported"));
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          resolve(position.coords);
+        },
+        (err) => {
+          switch (err.code) {
+            case err.PERMISSION_DENIED:
+              reject(new Error("no.permission"));
+              break;
+
+            case err.POSITION_UNAVAILABLE:
+              reject(new Error("gps.missed"));
+              break;
+
+            case err.TIMEOUT:
+              reject(new Error("timeout"));
+              break;
+
+            default:
+              reject(new Error("gps.error"));
+          }
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+        }
+      );
+    });
+  };
+
   const requestLocation = useCallback(() => {
     if (!navigator.geolocation) {
-      setError("gps.unsuported  ");
+      setError("gps.unsuported");
       return;
     }
 
@@ -17,6 +54,7 @@ export const useGeolocation = (): UseGeolocationReturn => {
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
+        console.log(position);
         setLocation({
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
@@ -47,12 +85,15 @@ export const useGeolocation = (): UseGeolocationReturn => {
     );
   }, []);
 
+
   return {
     location,
     loading,
     error,
     requestLocation,
+    requestSingleLocation
   };
+
 };
 
 type PermissionState = "granted" | "prompt" | "denied" | "unknown";

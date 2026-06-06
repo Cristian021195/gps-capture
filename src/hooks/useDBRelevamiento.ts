@@ -1,13 +1,15 @@
 import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "../db/db";
 import { TextHelper } from "../classes/TextHelper";
+import { relevamientoService } from "../services/relevamiento.service";
 
 export function useDBRelevamiento() {
-    const relevamientos = useLiveQuery( async () => {
-        return await db.relevamiento.toArray();
-    }, []); // importante para que reaccione al cambio
+    const relevamientos = useLiveQuery(
+        () => relevamientoService.getAll(),
+        []
+    );
     
-    return { relevamientos: relevamientos ?? [] };
+    return { relevamientos };
 }
 
 export function useDBRelevamientoLike(_relevamiento: string) {

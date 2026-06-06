@@ -14,7 +14,7 @@ export const MainMenuOptions = () => {
             <Link to="/proveedores" onClick={()=>{updateParams({ emergent: null }, { replace: true });}}>
                 <button className="flex items-center gap-2">
                     <MapLayoutIcon/>
-                    {tr({id:'proveedores'})}
+                    {tr({id:'info.proveedores'})}
                 </button>
             </Link>
             <Link to="/config" onClick={()=>{updateParams({ emergent: null }, { replace: true });}}>

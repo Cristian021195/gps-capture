@@ -203,3 +203,44 @@ export interface IRutaRelevamiento extends IRuta {
      */
     relevamiento_nombre: string
 }
+
+/**
+ * Es la interfaz básica para el guardado en base de datos de 
+ */
+export interface IRegistroGPSBasic {
+
+    /**
+     * Identificador de ruta o clave foranea
+     */
+    ruta_id: number,
+
+    /**
+     * Latitud de tipo flotante / decimal
+     */
+    latitud: number,
+
+    /**
+     * Longitud de tipo flotante / decimal
+     */
+    longitud: number,
+
+    /**
+     * Identificador de IGeoProvider (local) o clave foranea
+     */
+    geo_provider_id: number,
+
+    /**
+     * Texto de lo que nos devuelve la API del GeoProvider, generalmente calle y número juntos. Ej: San Luis 1216
+     */
+    formatted_address: string,
+
+    /**
+     * Texto que agregamos localmente para uso o identificación interna de la app 
+     */
+    descripcion: string,
+
+    /**
+     * Identificador Unico según el proveedor que responde por API. Ej: Google: place_id, OSM: osm_type+"-"+osm_id, etc.
+     */
+    place_id: string
+}

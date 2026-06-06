@@ -91,7 +91,7 @@
     @apply bg-[#49a68b] rounded-xl px-1 py-0.5 text-[#f2f2f2] text-xs w-fit;
 }
 .table-body{
-    @apply relative text-lg [&_tr_td]:whitespace-nowrap [&_tr_td]:p-2 [&>tr:nth-child(odd)]:bg-gray-100 dark:[&>tr:nth-child(odd)]:bg-mist-900 [&_tr_td:hover]:font-bold ;
+    @apply relative text-lg [&_tr_td]:whitespace-nowrap [&_tr_td]:p-2 [&>tr:nth-child(odd)]:bg-gray-100 dark:[&>tr:nth-child(odd)]:bg-mist-900;
 }
 .table-head{
     @apply sticky top-0 z-10 uppercase bottom-0.5 opacity-100 [&_tr]:text-nowrap [&_tr]:mx-4 [&_tr_th]:border [&_tr_th]:border-gray-300 [&_tr_th]:p-2 [&_tr_th]:text-left;

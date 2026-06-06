@@ -31,9 +31,7 @@ export const RutaForm = ({ onSearch, rutaItem }: IProps) => { // {relevamiento, 
         <List strongIos insetIos className="py-0 my-0 w-full">
                 <ListInput outline label={tr({id:'find'})} floatingLabel type="text" placeholder={tr({id:'find.holder'})}
                     onChange={(e)=>{
-                        if(e.target.value.length >= 2){
-                            onSearch(e.target.value);
-                        }                         
+                        onSearch(e.target.value);
                     }}
                     media={
                         <SearchIcon width={20} height={20}/>
