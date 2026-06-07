@@ -185,5 +185,24 @@
     "csv.export": "¿Exportar Coordenadas?",
     "csv.export.desc": "Seleccione un sistema operativo para exportar el correcto formato para su archivo .csv",
     "estandar": "Estandar",
-    "windows": "CSV MS Excel"
+    "windows": "CSV MS Excel",
+
+    "intro.t1":"Bienvenido a GPS Capture",
+    "intro.d1":"Aplicación web para el guardado de puntos GPS con asistencia de proveedores de GPS externos.",
+    "intro.t2":"Funciona sin internet",
+    "intro.d2":"Carga coordenadas sin datos móviles. Rápido, liviano y siempre disponible",
+    "intro.d2b":"Recuerda habilitar los permisos de ubicación primero y encender el GPS",
+    "intro.t3":"Exporta las coordenadas en segundos",
+    "intro.d3":"Luego podes usarla en tus propios sistemas o compartirlas",
+    "intro.t4":"¡Todo listo!",
+    "intro.m1":"Bienvenida",
+    "intro.m2":"Ventajas",
+    "intro.m3":"Uso",
+    "intro.m4":"Final",
+    "prev": "Atrás",
+    "next": "Siguiente",
+    "skip": "Saltar",
+    "finish": "Finalizar",
+    "step.four.desc":"Recuerda crear un relevamiento, luego ruta asociada a dicho relevamiento, y coordenadas apuntadas a dicha ruta",
+    "step.four.desc2":"Tampoco olvides de agregar la API key de aquellos proveedores que si requieran"
 }

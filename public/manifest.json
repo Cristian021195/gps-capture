@@ -1,18 +1,18 @@
 {
     "lang": "es",
     "display_override": ["window-controls-overlay"], 
-    "theme_color": "#4A7D73",
+    "theme_color": "#B68171",
     "orientation": "portrait",
-    "background_color": "#4A7D73",
+    "background_color": "#B68171",
     "display": "standalone",
     "handle_links": "preferred",
     "dir": "ltr",
     "scope": "./",
     "start_url": "./",
     "protocol_handlers": [],
-    "name": "Horabondi",
-    "short_name": "Horabondi",
-    "description": "App para consultar horarios y precios de colectivos",
+    "name": "GPS Capture",
+    "short_name": "GPS Capture",
+    "description": "App para tomar puntos gps y poder exportarlos",
     "categories": ["productivity", "travel", "urban", "finance"],
     "launch_handler": {
         "client_mode": ["navigate-existing", "auto"]
@@ -191,17 +191,6 @@
         }
     ],
     "shortcuts": [
-        {
-            "name": "Scan",
-            "url": "/scan",
-            "icons": [
-                {
-                    "src": "/shortcuts/qr-scut.svg",
-                    "type": "image/png",
-                    "sizes": "512x512"
-                }
-            ]
-        },
         {
             "name": "Compartir",
             "url": "/info#share",

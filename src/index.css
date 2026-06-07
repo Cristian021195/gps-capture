@@ -2,34 +2,56 @@
 @import "konsta/react/theme.css";
 
 :root {
-    --color-primary: #1e554a;
-    --color-primary-1: #0c3f35;
-    --color-primary-2:#1d2b2a;
-    --color-primary-3: #31685e;
-    --color-primary-4: #4a7d73;
-    --color-primary-5: #709890;
-    --color-primary-6: #a9cdc6;
-    --color-primary-7: #bcd9d3;
-    --color-primary-8: #cde7ec;    
-    --color-primary-9: #eef5f6;
-    --color-primary-10: #d5f1ec;
-
-    --color-alt-1: #49a68b;
-    --color-alt-2: #20b7af;
-
+    --color-primary: #795548;
+    --color-primary-1: #8b6152;
+    --color-primary-2:#744e40;
+    --color-primary-3: #a06c5a;
+    --color-primary-4: #b68171;
+    --color-primary-5: #c07a63;
+    --color-primary-6: #ce866f;
+    --color-primary-7: #df9c86;
+    --color-primary-8: #ebb6a4;    
+    --color-primary-9: #f0cabe;
+    --color-primary-10: #f3ded7;
+    --color-alt-1: #8f5946;
+    --color-alt-2: #ce6b47;
     --color-danger:#7f2d38;
     --color-danger-0:#3d030b;
     --color-danger-0:#60151f;
     --color-danger-0:#9c4a55;
     --color-danger-0:#c0747e;
-
     --color-container-light: #faf9fe;
     --color-container-dark: #0d0e12;
 }
 
+/* Matcheo de colores 
+
+     --color-primary: #1e554a; #795548
+     --color-primary-1: #0c3f35;
+     --color-primary-2:#1d2b2a;
+     --color-primary-3: #31685e;
+     --color-primary-4: #4a7d73; #A1887F
+     --color-primary-5: #709890;
+     --color-primary-6: #a9cdc6;
+     --color-primary-7: #bcd9d3;
+     --color-primary-8: #cde7ec;    
+     --color-primary-9: #eef5f6;
+     --color-primary-10: #d5f1ec;
+     --color-alt-1: #49a68b;
+     --color-alt-2: #20b7af;
+     --color-danger:#7f2d38;
+     --color-danger-0:#3d030b;
+     --color-danger-0:#60151f;
+     --color-danger-0:#9c4a55;
+     --color-danger-0:#c0747e;
+     --color-container-light: #faf9fe;
+     --color-container-dark: #0d0e12;
+
+*/
+
 /* Colores base (Tailwind) */
 @theme {  
-  --color-brand-primary: #ffffff;
+  --color-brand-primary: #744e40;
   --max-h-114: 28.5rem;
 }
 
@@ -53,29 +75,29 @@
   }  
 }
 
-/* estilos globales finales para componentes */
+/* estilos globales finales para componentes 795548*/
 .k-btn{
-    @apply bg-[#1e554a] dark:text-[#f2f2f2] disabled:dark:bg-[#1d2b2a] disabled:dark:text-gray-500 disabled:bg-gray-200
+    @apply bg-[#795548] dark:text-[#f2f2f2] disabled:dark:bg-[#744e40] disabled:dark:text-gray-500 disabled:bg-gray-200
 }
 .k-btn-tonal{
-    @apply bg-[#709890] dark:text-[#f2f2f2] disabled:dark:bg-[#1d2b2a] disabled:dark:text-gray-500 disabled:bg-gray-200
+    @apply bg-[#c07a63] dark:text-[#f2f2f2] disabled:dark:bg-[#744e40] disabled:dark:text-gray-500 disabled:bg-gray-200
 }
 .k-btn-tonal-alt{
-    @apply bg-[#709890] text-[#f2f2f2] disabled:dark:bg-[#1d2b2a] disabled:text-gray-500 disabled:bg-gray-200
+    @apply bg-[#c07a63] text-[#f2f2f2] disabled:dark:bg-[#744e40] disabled:text-gray-500 disabled:bg-gray-200
 }
 .k-tonal-text{
-    @apply text-[#0c3f35] dark:text-gray-600;
+    @apply text-[#8b6152] dark:text-gray-600;
 }
 .k-title{
-    @apply text-[#0c3f35] dark:text-[#f2f2f2];
+    @apply text-[#8b6152] dark:text-[#f2f2f2];
 }
 .k-bg{
     /*@apply bg-[#faf9fe] dark:bg-[#0d0e12];*/
-    @apply material:bg-[#4a7d73] material:dark:bg-[#1d2b2a] ios:dark:bg-[#1d2b2a] material:text-[#faf9fe];
+    @apply material:bg-[#A1887F] material:dark:bg-[#744e40] ios:dark:bg-[#744e40] material:text-[#faf9fe];
 }
 .k-bg-tonal{
     /*@apply bg-[#faf9fe] dark:bg-[#0d0e12];*/
-    @apply bg-[#709890] dark:bg-[#1d2b2a] text-[#faf9fe];
+    @apply bg-[#c07a63] dark:bg-[#744e40] text-[#faf9fe];
 }
 .k-text{
     /*@apply text-[#222222] dark:text-[#f2f2f2];*/
@@ -85,10 +107,10 @@
     @apply text-gray-600 dark:text-[#f2f2f2];
 }
 .k-panel-form{
-    @apply bg-[#eef5f6] dark:bg-[#0e1416];
+    @apply bg-[#f3ded7] dark:bg-[#0e1416];
 }
 .k-new{
-    @apply bg-[#49a68b] rounded-xl px-1 py-0.5 text-[#f2f2f2] text-xs w-fit;
+    @apply bg-[#8f5946] rounded-xl px-1 py-0.5 text-[#f2f2f2] text-xs w-fit;
 }
 .table-body{
     @apply relative text-lg [&_tr_td]:whitespace-nowrap [&_tr_td]:p-2 [&>tr:nth-child(odd)]:bg-gray-100 dark:[&>tr:nth-child(odd)]:bg-mist-900;
@@ -106,7 +128,7 @@
     @apply w-0 h-0 border-l-6 border-r-6 border-t-12 border-l-transparent border-r-transparent border-t-gray-800  absolute top-6;
 }
 .tooltip-btn {
-    @apply text-sm mx-1 p-0.5 rounded focus:outline-none min-w-7 bg-[#709890] text-[#f2f2f2];
+    @apply text-sm mx-1 p-0.5 rounded focus:outline-none min-w-7 bg-[#c07a63] text-[#f2f2f2];
 }
 .tc{
     @apply relative inline-block;
@@ -119,15 +141,14 @@
     @apply rounded-md transition-all duration-300;
 }
 .bg-hb-1{
-    background-color: #46A290;
+    background-color: #744e40;
 }
 .bg-hb-2{
-    background-color: #32685E;
+    background-color: #744e40;
 }
 .bg-hb-3{
-    background-color: #7DACA3;
+    background-color: #ebb6a4;
 }
-
 
 /* base html estandar */
 html {

@@ -15,6 +15,6 @@ export const StepTwo = ({className}:IProps) => {
             <Check/>
             <Smartphone/>
         </div>
-        <h2>{tr({id:'intro.d2'})}</h2>
+        <h2>{tr({id:'intro.d2'})} <br /> {tr({id:'intro.d2b'})}</h2>
     </div>
 }

@@ -30,12 +30,12 @@ export const StepOne = ({className, setSkip}:IProps) => {
     return <div className={" "+className}>
         <h1 className="k-title text-3xl">{tr({id:'intro.t1'})}</h1>
         <img src={busLogo} width={120} height={120} className="mx-auto hidden" alt="Horabondi logo" />
-        <div className="flex justify-center items-center mx-8">
-            <OnboardingStepOne/>
-            <LineLeftToRight/>
+        <div className="flex justify-center items-center mx-8">            
             <Smartphone/>
+            <LineLeftToRight/>
+            <OnboardingStepOne/>            
         </div>
-        <h2>{tr({id:'intro.d1'})}</h2>
+        <h2>{tr({id:'intro.d1'})}</h2>        
         <Link className="kclink-u my-0" onClick={setSkip}>{tr({id:'skip'})}</Link>
         <List>
             <ListInput
@@ -48,7 +48,6 @@ export const StepOne = ({className, setSkip}:IProps) => {
                 media={<LanguageIcon />}>
                     <option value="es"> {tr({id:'language.s'})}</option>
                     <option value="en"> {tr({id:'language.en'})}</option>
-                    <option value="pt"> {tr({id:'language.pt'})}</option>
             </ListInput>
         </List>
     </div>
