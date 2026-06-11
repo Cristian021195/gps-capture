@@ -133,6 +133,8 @@
     "nuevo":"Nuevo",
     "route.new":"Nueva Ruta",
     "select.provider": "Seleccione un proveedor",
+    "select.ruta": "Seleccione una ruta",
+    "select.service": "Seleccione un servicio",
     "select.rel":"Seleccione un relevamiento",
     "selected.rel":"Relevamiento seleccionado",
     "rel.error.required":"El relevamiento es requerido",

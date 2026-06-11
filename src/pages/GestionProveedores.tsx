@@ -20,7 +20,6 @@ export const GestionProveedores = () => {
 
     return <PageNavbarContainer className="k-bg" bgClassName="k-bg" title={tr({id:'proveedores.gestion'})} fallback_url="/" hash_eval="#share" right={<MenuButton/>}>
         { !standalone && <IPhoneUserAlert/> }
-        <LocationConfigAdvice/>
         <div className="mx-4">
             <GestionProveedorForm proveedor={proveedorSeleccionado} unsetProveedor={unsetProveedor}/>
         </div>

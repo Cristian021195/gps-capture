@@ -41,6 +41,9 @@ export const RutaEditForm = ({ruta}:IProps) => {
 
     return <div>
             <List strongIos insetIos className="py-0 my-0 w-full">
+                <div className={relevamientoId ? "mx-4 px-2" : "hidden"}>
+                    <b>{tr({id:'select.rel'})}:</b>
+                </div>
                 <ListInput
                     type="select"
                     dropdown

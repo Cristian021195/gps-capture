@@ -60,8 +60,14 @@ export default function DashboardLayout() {
 
   //{updateAvailable && <NewUpdateScreen/>}
   return (
-    <App theme={plataforma} dark={night_mode} materialTouchRipple={effects} iosHoverHighlight={effects}>      
-      <Dialog opened={opn} onBackdropClick={()=>{setOpn(false);localStorage.setItem(LS_UN,'1')}} content={<ModalNewUpdate cb={()=>{setOpn(false); localStorage.setItem(LS_UN,'1')}}/>}></Dialog>
+    <App theme={plataforma} dark={night_mode} materialTouchRipple={effects} iosHoverHighlight={effects}>
+      <Dialog opened={opn} onBackdropClick={()=>{
+          setOpn(false);localStorage.setItem(LS_UN,'1')
+        }} 
+        content={
+          <ModalNewUpdate cb={()=>{setOpn(false); localStorage.setItem(LS_UN,'1')}}/>
+      }>        
+      </Dialog>
       <ModalUpdate/>
       <PanelInfo/>
       <Outlet/>

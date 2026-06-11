@@ -29,7 +29,7 @@ export const GestionProveedorForm = ({proveedor, unsetProveedor}:IProps) => {
                 }}
                 media={<MapLayoutIcon/>}>{
                     <>
-                    <option value="">{tr({id:'select.provider'})}</option>
+                    <option value="">{tr({id:'select.service'})}</option>
                     {
                         proveedores_default.map(r => <option key={r.id} value={r.id}> {r.nombre} ({r.service})</option>)
                     }

@@ -42,7 +42,12 @@ export const CoordenadasForm = () => {
                         setRutaId(Number(e.target.value));
                     }}
                     media={<RouteIcon/>}>{
-                        rutas?.map(r => <option key={r.id} value={r.id}> {r.nombre}</option>)
+                        <>
+                            <option value="">{tr({id:'select.ruta'})}</option>
+                            { 
+                                rutas?.map(r => <option key={r.id} value={r.id}> {r.nombre}</option>)
+                            }
+                        </>
                     }
                 </ListInput>
                 <ListInput
@@ -55,7 +60,12 @@ export const CoordenadasForm = () => {
                         setProveedorId(Number(e.target.value));
                     }}
                     media={<BoxSeamIcon/>}>{
-                        proveedores?.map(r => <option key={r.id} value={r.id}> {r.nombre}</option>)
+                        <>
+                            <option value="">{tr({id:'select.provider'})}</option>
+                            { 
+                                proveedores?.map(r => <option key={r.id} value={r.id}> {r.nombre}</option>) 
+                            }
+                        </>
                     }
                 </ListInput>
                 <ListInput 
