@@ -40,7 +40,7 @@ export const router = createBrowserRouter([
           { path: "/ruta", element: <Ruta/> },
           { path: "/coordenadas", element: <Coordenadas/> },
           { path: "/proveedores", element: <Proveedores/> },
-          { path: "/gestion-servicios", element: <GestionProveedores/> }
+          { path: "/gestion-proveedores", element: <GestionProveedores/> }
         ],
       }
     ],

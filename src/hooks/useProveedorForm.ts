@@ -1,27 +1,23 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 import { useEffect, useState } from "react";
-import { TextHelper } from "../classes/TextHelper";
-import { useToast } from "../store/toast";
-import { useIntl } from "react-intl";
 import { proveedorService } from "../services/proveedor.service";
-import { proveedores_default } from "../utils/proveedores";
-
-const default_prov = proveedores_default[0]?.service || "google";
+import { TextHelper } from "../classes/TextHelper";
+import Dexie from "dexie";
 
 export function useProveedorForm(id?: number) {
-    const [nombre, setNombre] = useState<string | undefined>("");
-    const [apiKey, setApiKey] = useState<string | undefined>("");
-    const [providerType, setProviderType] = useState<string | undefined>(default_prov);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-    const {openToast} = useToast();
-    const {formatMessage:tr} = useIntl();
+    const [nombre, setNombre] = useState("");
+    const [apiKey, setApiKey] = useState<string>("");
+    const [error, setError] = useState<string | undefined>();
+    const [loading, setLoading] = useState<boolean>(false);
+    const [providerType, setProviderType] = useState<string>("");
 
-    useEffect(()=>{
-        if(error !== null){
-            openToast({text: tr({id:error})});
-        }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[error])
+    const clear = () => {
+        setNombre('');
+        setApiKey('');
+        setError('');
+        setLoading(false);
+        setProviderType('');        
+    }
 
     useEffect(() => {
         if (!id) return;
@@ -33,8 +29,7 @@ export function useProveedorForm(id?: number) {
 
             if (item) {
                 setNombre(item.nombre);
-                setApiKey(item.api_key);
-                setProviderType(item.provider_type);
+                // setRelevamientoId(item.relevamiento_id);
             }
 
             setLoading(false);
@@ -43,50 +38,67 @@ export function useProveedorForm(id?: number) {
         load();
     }, [id]);
 
-    const save = async () => {
+    const save = async (cb: () => void) => {
         try {
-            setError(null);
+            setError(undefined);
 
             if (id) {
-                // no permitimos cambio de proveedor
+                const item = await proveedorService.getById(id);
+
+                if(item?.api_key === apiKey && item?.nombre === nombre && item.provider_type === providerType){
+                    throw new Error("NO_CHANGES");
+                }
+
                 await proveedorService.update(id, {
-                    api_key:apiKey,
                     nombre,
-                    key: TextHelper.from(nombre+"").slug().get()
+                    key: TextHelper.from(nombre).slug().get(),
+                    api_key: apiKey
                 });
-                reset();
+                cb();
+
             } else {
+
                 await proveedorService.create({
-                    api_key:apiKey+"",
-                    nombre:nombre+"",
-                    provider_type: providerType+"",
-                    key: TextHelper.from(nombre+"").slug().get()
+                    nombre,
+                    provider_type: providerType,
+                    api_key:apiKey,
+                    key: TextHelper.from(nombre).slug().get()
                 });
-                reset();
+                clear();
+                cb();
             }
         } catch (err) {
             if (err instanceof Error && err.message === "DUPLICATE_KEY") {
                 setError("duplicate");
                 return;
             }
+
+            if (err instanceof Error && err.message === "REQUIRED_RELEVAMIENTO_KEY") {
+                setError("rel.error.required");
+                return;
+            }
+
+            if (err instanceof Error && err.message === "NO_CHANGES") {
+                setError("no.changes");
+                return;
+            }
+
+            if (err instanceof Dexie.ModifyError) {
+                if(err.failures[0].name === 'ConstraintError'){
+                    setError("duplicate");
+                    return;
+                }
+            }
+
             setError("broken");
         }
     };
-
-    const reset = () => {
-        setApiKey("")
-        setError(null)
-        setNombre("")
-        setProviderType(default_prov);
-    }
 
     return {
         nombre, setNombre,
         apiKey, setApiKey,
         providerType, setProviderType,
-        save,
-        loading,
-        error,
-        isEditing: !!id
+        clear, save,
+        error, loading
     };
 }

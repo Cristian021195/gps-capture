@@ -2,9 +2,9 @@ import { Button, List, ListInput } from "konsta/react";
 import { EditIcon, MapLayoutIcon, SaveIcon } from "../svg/UtilsIcon";
 import { proveedores_default } from "../../utils/proveedores";
 import { useIntl } from "react-intl";
-import type { IGeoProvider } from "../../interfaces/IEntidades";
 import { useProveedorForm } from "../../hooks/useProveedorForm";
-import { useToast } from "../../store/toast";
+import { useEffect } from "react";
+import type { IGeoProvider } from "../../interfaces/IEntidades";
 
 interface IProps {
     proveedor: IGeoProvider | null,
@@ -13,8 +13,13 @@ interface IProps {
 
 export const GestionProveedorForm = ({proveedor, unsetProveedor}:IProps) => {
     const {formatMessage:tr} = useIntl();
-    const {nombre, setNombre, apiKey, setApiKey, providerType, setProviderType, clear, save} = useProveedorForm();
-    const {openToast} = useToast();
+    const { nombre, setNombre, apiKey, setApiKey, providerType, setProviderType, save, loading, error, isEditing } = useProveedorForm(proveedor?.id);
+
+    useEffect(()=>{
+        if(proveedores_default.length > 0){
+            setProviderType(proveedores_default[0].service);
+        }        
+    },[])
 
     return (
         <List strongIos insetIos className="py-0 my-0 w-full">
@@ -28,53 +33,49 @@ export const GestionProveedorForm = ({proveedor, unsetProveedor}:IProps) => {
                     setProviderType(e.target.value)
                 }}
                 media={<MapLayoutIcon/>}>{
-                    <>
-                    <option value="">{tr({id:'select.provider'})}</option>
-                    {
-                        proveedores_default.map(r => <option key={r.id} value={r.id}> {r.nombre} ({r.service})</option>)
-                    }
-                    </>
+                    proveedores_default.map(r => <option key={r.id} value={r.id}> {r.nombre} ({r.service})</option>)
                 }
             </ListInput>
             <ListInput outline label={tr({id:'proveedor.reg'})} floatingLabel type="text" placeholder={tr({id:'proveedor.ej'})} 
                 value={nombre}
-                onChange={(e)=>{
-                    setNombre(e.target.value);
-                }}
+                onChange={(e)=>{setNombre(e.target.value);}}
                 media={
-                    <SaveIcon/>
+                    isEditing ? <EditIcon/> : <SaveIcon/>
                 }
-                clearButton={true}
+                clearButton={(nombre) ? true : false}
                 onClear={()=>{
                     setNombre("");
-                }}
+                }}                
             />
             <ListInput outline label={tr({id:'api.key'})} floatingLabel type="text" placeholder={tr({id:'api.ej'})} 
                 value={apiKey}
                 onChange={(e)=>{
-                    setApiKey(e.target.value)
-                }}
+                    setApiKey(e.target.value.trim());}
+                }
                 media={
-                    <SaveIcon/>
+                    isEditing ? <EditIcon/> : <SaveIcon/>
                 }
                 clearButton={true}
                 onClear={()=>{
-                    setApiKey("")
+                    setApiKey("");
                 }}                
             />
             <div className="flex gap 4">
-                <Button type="button" className="w-fit mx-auto" disabled={(nombre?.length < 3) || providerType === ''} onClick={()=>{
-                    save(()=>{
-                        openToast({text:tr({id:'prvoeedor.ok'})});
-                    });
+                <Button type="button" className="w-fit mx-auto" disabled={false} onClick={()=>{
+                    save();
+                    unsetProveedor();
                 }}>
                     {tr({id:'save.edit'})}
                 </Button>            
-                <Button type="button" className="w-fit mx-auto k-btn-tonal" disabled={false} onClick={clear}>
+                <Button type="button" className="w-fit mx-auto k-btn-tonal" disabled={false} onClick={()=>{
+                    unsetProveedor();
+                    setNombre("");
+                    setApiKey("");
+                    setProviderType("");
+                }}>
                     {tr({id:'clear'})}
                 </Button>
             </div>
         </List>
     )
 }
-// isEditing ? <EditIcon/> : <SaveIcon/>

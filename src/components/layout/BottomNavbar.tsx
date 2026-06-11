@@ -9,7 +9,7 @@ export const BottomNavbar = () => {
     const {formatMessage:tr} = useIntl(); 
     const {pathname} = useLocation();
     return (
-      <Tabbar bgClassName="bg-[#FAF9FE] dark:bg-[#131B1C]" className={`left-0 bottom-0 fixed ${pathname.match(/\b(info|privacy|config|instructivo|lang|notfound|proveedores)\b/g) && 'hidden'}`}>
+      <Tabbar bgClassName="bg-[#FAF9FE] dark:bg-[#131B1C]" className={`left-0 bottom-0 fixed ${pathname.match(/(?:^|\/)(info|privacy|config|instructivo|lang|notfound|proveedores)(?:\/|$)/) && 'hidden'}`}>
           <TabbarLink 
             className="k-title"
             active={pathname === '/'}
@@ -57,9 +57,9 @@ export const BottomNavbar = () => {
           />
           <TabbarLink 
             className="k-title"
-            active={pathname === '/gestion-servicios'}
+            active={pathname === '/gestion-proveedores'}
             onClick={()=>{
-              navigate('/gestion-servicios');
+              navigate('/gestion-proveedores');
             }}
             icon={
                 <Icon

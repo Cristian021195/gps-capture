@@ -85,23 +85,27 @@ export const CoordenadasForm = () => {
                 }
                 </Button>
             </div>
-            <div className="m-4">{tr({id:'cord.cant'})}: { coordenadas.length }</div>
-            <MainDivTitle title={tr({ id: 'latest.points' })}>
-            {coordenadas
-                .slice(0, 3)
-                .map(c => (
-                <CoordenadaInsertedCard
-                    key={c.id}
-                    descripcion={c.descripcion + ""}
-                    formatted_address={c.formatted_address + ""}
-                    geo_provider={c.geo_provider}
-                    latitud={c.latitud}
-                    longitud={c.longitud}
-                    place_id={c.place_id + ""}
-                />
-                ))
+            {
+                coordenadas.length > 0 && <>
+                    <div className="m-4">{tr({id:'cord.cant'})}: { coordenadas.length }</div>
+                    <MainDivTitle title={tr({ id: 'latest.points' })}>
+                    {coordenadas
+                        .slice(0, 3)
+                        .map(c => (
+                        <CoordenadaInsertedCard
+                            key={c.id}
+                            descripcion={c.descripcion + ""}
+                            formatted_address={c.formatted_address + ""}
+                            geo_provider={c.geo_provider}
+                            latitud={c.latitud}
+                            longitud={c.longitud}
+                            place_id={c.place_id + ""}
+                        />
+                        ))
+                    }
+                    </MainDivTitle>
+                </>
             }
-            </MainDivTitle>
         </div>
     )
 }
