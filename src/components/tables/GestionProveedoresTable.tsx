@@ -5,15 +5,20 @@ import { useIntl } from "react-intl";
 import type { IGeoProvider } from "../../interfaces/IEntidades";
 import { TrashIcon } from "../svg/FormIcons";
 import { PencilIcon } from "../svg/UtilsIcon";
+import { useModal } from "../../store/modal";
+import { useUpdateSearchParams } from "../../hooks/useUpdateSearchParams";
+import { ModalBorrarBase } from "../floating/ModalBorrarBase";
 
 interface IGeoProviderTableProps {
   data: IGeoProvider[],
   onDelete: (id: number) => Promise<void>;
-  getToEdit: (id: number) => void | Promise<void>;
+  onEdit: (item: IGeoProvider) => void,
 }
 
-export default function GestionProveedoresTable({data, onDelete, getToEdit}:IGeoProviderTableProps) {
-  const {formatMessage:tr} = useIntl();
+export default function GestionProveedoresTable({ data, onDelete, onEdit }: IGeoProviderTableProps) {
+  const { formatMessage: tr } = useIntl();
+  const { openModal } = useModal();
+  const updateParams = useUpdateSearchParams();
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 3,
@@ -23,27 +28,41 @@ export default function GestionProveedoresTable({data, onDelete, getToEdit}:IGeo
     () => [
       {
         accessorKey: "nombre",
-        header: tr({ id: "name"}),
+        header: tr({ id: "name" }),
       },
       {
         id: "actions",
-        header: tr({ id: "actions"}),
+        header: tr({ id: "actions" }),
         cell: ({ row }) => (
           <div className="flex gap-2 justify-evenly">
             <button
               type="button"
               className="btn-sm p-1 bg-red-400 text-white"
-              onClick={() => onDelete?.(row.original.id)}
+              onClick={
+                //() => onDelete?.(row.original.id)
+                () => {
+                  openModal({
+                    title: tr({ id: 'prov.delete.title' }),
+                    content: <ModalBorrarBase cb={() => {
+                      onDelete?.(row.original.id)
+                    }} desc={tr({ id: "prov.delete.desc" })
+                    } />
+                  });
+                  updateParams({ emergent: "modal" });
+                }
+              }
             >
-              <TrashIcon/>
+              <TrashIcon />
             </button>
 
             <button
               type="button"
               className="btn-sm p-1 bg-yellow-400 text-white"
-              onClick={() => getToEdit?.(row.original.id)}
+              onClick={() => {
+                onEdit?.(row.original);
+              }}
             >
-              <PencilIcon/>
+              <PencilIcon />
             </button>
           </div>
         ),
@@ -77,9 +96,9 @@ export default function GestionProveedoresTable({data, onDelete, getToEdit}:IGeo
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
                   </th>
                 ))}
               </tr>
@@ -100,27 +119,27 @@ export default function GestionProveedoresTable({data, onDelete, getToEdit}:IGeo
               </tr>
             ))}
           </tbody>
-        </table>      
+        </table>
       </div>
       <div className="flex gap-2 items-center justify-between mt-4">
         <div className="flex gap-2 items-center">
-            <Button tonal small className="w-fit" onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
-                {"<<"}
-            </Button>
+          <Button tonal small className="w-fit" onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
+            {"<<"}
+          </Button>
 
-            <span>
-                {table.getState().pagination.pageIndex + 1} / {" "}
-                {table.getPageCount()}
-            </span>
+          <span>
+            {table.getState().pagination.pageIndex + 1} / {" "}
+            {table.getPageCount()}
+          </span>
 
-            <Button tonal small className="w-fit" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
-                {">>"}
-            </Button>
+          <Button tonal small className="w-fit" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
+            {">>"}
+          </Button>
         </div>
         <select value={table.getState().pagination.pageSize} onChange={(e) => table.setPageSize(Number(e.target.value))}>
           {[3, 5, 10].map((size) => (
             <option key={size} value={size}>
-              {tr({id:'show'})} {size}
+              {tr({ id: 'show' })} {size}
             </option>
           ))}
         </select>

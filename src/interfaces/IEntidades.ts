@@ -232,7 +232,7 @@ export interface IRegistroGPSBasic {
     /**
      * Texto de lo que nos devuelve la API del GeoProvider, generalmente calle y número juntos. Ej: San Luis 1216
      */
-    formatted_address: string,
+    formatted_address: string | null,
 
     /**
      * Texto que agregamos localmente para uso o identificación interna de la app 
@@ -242,5 +242,5 @@ export interface IRegistroGPSBasic {
     /**
      * Identificador Unico según el proveedor que responde por API. Ej: Google: place_id, OSM: osm_type+"-"+osm_id, etc.
      */
-    place_id: string
+    place_id: string | null
 }

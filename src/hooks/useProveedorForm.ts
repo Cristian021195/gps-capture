@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { proveedorService } from "../services/proveedor.service";
 import { TextHelper } from "../classes/TextHelper";
 import Dexie from "dexie";
+import { useToast } from "../store/toast";
+import { useIntl } from "react-intl";
 
 export function useProveedorForm(id?: number) {
     const [nombre, setNombre] = useState("");
@@ -10,17 +12,32 @@ export function useProveedorForm(id?: number) {
     const [error, setError] = useState<string | undefined>();
     const [loading, setLoading] = useState<boolean>(false);
     const [providerType, setProviderType] = useState<string>("");
+    const {openToast} = useToast();
+    const {formatMessage:tr} = useIntl();
 
     const clear = () => {
         setNombre('');
         setApiKey('');
-        setError('');
+        setError(undefined);
         setLoading(false);
         setProviderType('');        
     }
 
     useEffect(() => {
-        if (!id) return;
+        if (error) {
+            openToast({ text: tr({ id: error }) });
+        }
+    }, [error, openToast, tr]);
+
+    useEffect(() => {
+        if (!id) {
+            setNombre('');
+            setApiKey('');
+            setError(undefined);
+            setLoading(false);
+            setProviderType('');
+            return;
+        }
 
         const load = async () => {
             setLoading(true);
@@ -29,7 +46,8 @@ export function useProveedorForm(id?: number) {
 
             if (item) {
                 setNombre(item.nombre);
-                // setRelevamientoId(item.relevamiento_id);
+                setApiKey(item.api_key ?? "");
+                setProviderType(item.provider_type);
             }
 
             setLoading(false);
@@ -52,7 +70,8 @@ export function useProveedorForm(id?: number) {
                 await proveedorService.update(id, {
                     nombre,
                     key: TextHelper.from(nombre).slug().get(),
-                    api_key: apiKey
+                    api_key: apiKey,
+                    provider_type: providerType as any
                 });
                 cb();
 
@@ -60,7 +79,7 @@ export function useProveedorForm(id?: number) {
 
                 await proveedorService.create({
                     nombre,
-                    provider_type: providerType,
+                    provider_type: providerType as any,
                     api_key:apiKey,
                     key: TextHelper.from(nombre).slug().get()
                 });
@@ -99,6 +118,7 @@ export function useProveedorForm(id?: number) {
         apiKey, setApiKey,
         providerType, setProviderType,
         clear, save,
-        error, loading
+        error, loading,
+        isEditing: !!id
     };
 }

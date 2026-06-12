@@ -3,5 +3,5 @@ export interface IExportRegistroGPS {
     latitud:number,
     longitud:number,
     /* Es condicional: si no existe formatted_address se carga descripción */
-    titulo:string
+    titulo:string | undefined
 }

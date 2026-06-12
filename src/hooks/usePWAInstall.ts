@@ -1,6 +1,20 @@
 import { useEffect, useState } from "react";
 import type { IBeforeInstallPromptEvent } from "../interfaces/IBeforeInstallPromptEvent";
 
+interface BeforeInstallPromptEvent extends Event {
+  prompt(): Promise<void>;
+  userChoice: Promise<{
+    outcome: 'accepted' | 'dismissed';
+    platform: string;
+  }>;
+}
+
+declare global {
+  interface Window {
+    deferredPrompt?: BeforeInstallPromptEvent;
+  }
+}
+
 export const usePWAInstall = () => {
     const [bip, setBip] = useState<IBeforeInstallPromptEvent | undefined>();
     const [updateAvailable, setUpdateAvailable] = useState(false);

@@ -11,67 +11,71 @@ interface IProps {
     unsetProveedor: () => Promise<void>
 }
 
-export const GestionProveedorForm = ({proveedor, unsetProveedor}:IProps) => {
-    const {formatMessage:tr} = useIntl();
-    const {nombre, setNombre, apiKey, setApiKey, providerType, setProviderType, clear, save} = useProveedorForm();
-    const {openToast} = useToast();
+export const GestionProveedorForm = ({ proveedor, unsetProveedor }: IProps) => {
+    const { formatMessage: tr } = useIntl();
+    const { nombre, setNombre, apiKey, setApiKey, providerType, setProviderType, clear, save, isEditing } = useProveedorForm(proveedor?.id);
+    const { openToast } = useToast();
 
     return (
         <List strongIos insetIos className="py-0 my-0 w-full">
             <ListInput
                 type="select"
                 dropdown
-                colors={{bgMaterial:'k-panel-form rounded-b-xl', outlineBorderMaterial:'border-none'}}
+                colors={{ bgMaterial: 'k-panel-form rounded-b-xl', outlineBorderMaterial: 'border-none' }}
                 value={providerType}
                 name="relevamiento"
-                onChange={(e)=>{
+                onChange={(e) => {
                     setProviderType(e.target.value)
                 }}
-                media={<MapLayoutIcon/>}>{
+                media={<MapLayoutIcon />}>{
                     <>
-                    <option value="">{tr({id:'select.service'})}</option>
-                    {
-                        proveedores_default.map(r => <option key={r.id} value={r.id}> {r.nombre} ({r.service})</option>)
-                    }
+                        <option value="">{tr({ id: 'select.service' })}</option>
+                        {
+                            proveedores_default.map(r => <option key={r.id} value={r.id}> {r.nombre} ({r.service})</option>)
+                        }
                     </>
                 }
             </ListInput>
-            <ListInput outline label={tr({id:'proveedor.reg'})} floatingLabel type="text" placeholder={tr({id:'proveedor.ej'})} 
+            <ListInput outline label={tr({ id: 'proveedor.reg' })} floatingLabel type="text" placeholder={tr({ id: 'proveedor.ej' })}
                 value={nombre}
-                onChange={(e)=>{
+                onChange={(e) => {
                     setNombre(e.target.value);
                 }}
                 media={
-                    <SaveIcon/>
+                    isEditing ? <EditIcon /> : <SaveIcon />
                 }
                 clearButton={true}
-                onClear={()=>{
+                onClear={() => {
                     setNombre("");
                 }}
             />
-            <ListInput outline label={tr({id:'api.key'})} floatingLabel type="text" placeholder={tr({id:'api.ej'})} 
+            <ListInput outline label={tr({ id: 'api.key' })} floatingLabel type="text" placeholder={tr({ id: 'api.ej' })}
                 value={apiKey}
-                onChange={(e)=>{
+                onChange={(e) => {
                     setApiKey(e.target.value)
                 }}
                 media={
-                    <SaveIcon/>
+                    isEditing ? <EditIcon /> : <SaveIcon />
                 }
                 clearButton={true}
-                onClear={()=>{
+                onClear={() => {
                     setApiKey("")
-                }}                
+                }}
             />
             <div className="flex gap 4">
-                <Button type="button" className="w-fit mx-auto" disabled={(nombre?.length < 3) || providerType === ''} onClick={()=>{
-                    save(()=>{
-                        openToast({text:tr({id:'prvoeedor.ok'})});
+                <Button type="button" className="w-fit mx-auto" disabled={(nombre?.length < 3) || providerType === ''} onClick={() => {
+                    save(() => {
+                        openToast({ text: tr({ id: proveedor ? 'changes' : 'prvoeedor.ok' }) });
+                        unsetProveedor();
                     });
                 }}>
-                    {tr({id:'save.edit'})}
-                </Button>            
-                <Button type="button" className="w-fit mx-auto k-btn-tonal" disabled={false} onClick={clear}>
-                    {tr({id:'clear'})}
+                    {tr({ id: 'save.edit' })}
+                </Button>
+                <Button type="button" className="w-fit mx-auto k-btn-tonal" disabled={false} onClick={() => {
+                    clear();
+                    unsetProveedor();
+                }}>
+                    {tr({ id: 'clear' })}
                 </Button>
             </div>
         </List>

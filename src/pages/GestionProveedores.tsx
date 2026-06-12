@@ -3,28 +3,27 @@ import { useIntl } from "react-intl";
 import { IPhoneUserAlert } from "../components/blocks/IPhoneUserAlert";
 import { validateDisplayMode } from "../utils/navigator-data";
 import { MenuButton } from "../components/ui/MenuButton";
-import { LocationConfigAdvice } from "../components/blocks/LocationConfigTrigger";
 import { GestionProveedorForm } from "../components/forms/GestionProveedorForm";
 import GestionProveedoresTable from "../components/tables/GestionProveedoresTable";
 import { useDBProveedor } from "../hooks/useDBProveedor";
 
-if(localStorage.getItem('iphone_advice') === null){
+if (localStorage.getItem('iphone_advice') === null) {
     localStorage.setItem('iphone_advice', '1')
 }
 
 const standalone = validateDisplayMode('standalone');
 
-export const GestionProveedores = () => {    
-    const {formatMessage:tr} = useIntl();
-    const {proveedores, proveedorSeleccionado, deleteProveedor, getProveedor, unsetProveedor} = useDBProveedor();
+export const GestionProveedores = () => {
+    const { formatMessage: tr } = useIntl();
+    const { proveedores, proveedorSeleccionado, deleteProveedor, getProveedor, unsetProveedor } = useDBProveedor();
 
-    return <PageNavbarContainer className="k-bg" bgClassName="k-bg" title={tr({id:'proveedores.gestion'})} fallback_url="/" hash_eval="#share" right={<MenuButton/>}>
-        { !standalone && <IPhoneUserAlert/> }
+    return <PageNavbarContainer className="k-bg" bgClassName="k-bg" title={tr({ id: 'proveedores.gestion' })} fallback_url="/" hash_eval="#share" right={<MenuButton />}>
+        {!standalone && <IPhoneUserAlert />}
         <div className="mx-4">
-            <GestionProveedorForm proveedor={proveedorSeleccionado} unsetProveedor={unsetProveedor}/>
+            <GestionProveedorForm proveedor={proveedorSeleccionado} unsetProveedor={unsetProveedor} />
         </div>
         <div className="m-4 mt-8">
-            <GestionProveedoresTable data={proveedores} onDelete={deleteProveedor} getToEdit={getProveedor} />
+            <GestionProveedoresTable data={proveedores} onDelete={deleteProveedor} onEdit={(item) => getProveedor(item.id)} />
         </div>
     </PageNavbarContainer>
 }

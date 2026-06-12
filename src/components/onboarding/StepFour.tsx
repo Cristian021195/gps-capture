@@ -1,4 +1,3 @@
-import { BlockTitle } from "konsta/react"
 import { useIntl } from "react-intl";
 
 interface IProps {

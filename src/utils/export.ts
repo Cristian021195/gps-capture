@@ -13,7 +13,7 @@ export const exportCSVRegistroGPS = (data: IExportRegistroGPS[], os:'linux'|'ms'
             item.id,
             item.latitud,
             item.longitud,
-            `"${item.titulo.replace(/"/g, '""')}"`
+            `"${item.titulo?.replace(/"/g, '""')}"`
         ]);
 
         csvContent = [
@@ -30,7 +30,7 @@ export const exportCSVRegistroGPS = (data: IExportRegistroGPS[], os:'linux'|'ms'
             item.id,
             item.latitud.toString().replace('.', ','),
             item.longitud.toString().replace('.', ','),
-            `"${item.titulo.replace(/"/g, '""')}"`
+            `"${item.titulo?.replace(/"/g, '""')}"`
         ]);
 
         csvContent = [

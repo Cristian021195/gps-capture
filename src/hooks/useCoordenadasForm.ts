@@ -11,7 +11,7 @@ import { useDBCoordenada } from "./useDBCoordenada";
 export function useCoordenadasForm() {
 
     const { rutas } = useDBRutaAlt();
-    const { proveedores } = useDBProveedorAlt();    
+    const { proveedores } = useDBProveedorAlt();
     const { requestSingleLocation } = useGeolocation();
     const [loading, setLoading] = useState(false);
     const [currentLocation, setCurrentLocation] = useState<GeolocationCoordinates | undefined>();
@@ -50,20 +50,22 @@ export function useCoordenadasForm() {
         [proveedores, proveedorId]
     );
 
+    const eliminarCoordenada = async (id: number) => {
+        try {
+            setLoading(true);
+            await coordenadaService.delete(id);
+        } finally {
+            setLoading(false);
+        }
+    }
+
     // lógica del formulario
     const obtenerCoordenadas = async () => {
 
-        console.log({
-            rutaId,
-            proveedorId,
-            rutaSeleccionada,
-            proveedorSeleccionado
-        });
-
-        if (!rutaSeleccionada){
+        if (!rutaSeleccionada) {
             throw new Error("Debe seleccionar una ruta");
         }
-        if (!proveedorSeleccionado){
+        if (!proveedorSeleccionado) {
             throw new Error("Debe seleccionar un proveedor");
         }
         if (rutaId == null) {
@@ -93,17 +95,14 @@ export function useCoordenadasForm() {
                 console.warn("Falló reverse geocoding", e);
             }
 
-            console.log(coords)
-            console.log(geoResult)
-
             const registro_gps = {
-                ruta_id:rutaId,
-                latitud:coords.latitude,
-                longitud:coords.longitude,
-                geo_provider_id:proveedorId,
-                formatted_address:geoResult? geoResult.formatted_address : "",
-                descripcion:descripcion,
-                place_id:geoResult?.place_id+"",
+                ruta_id: rutaId,
+                latitud: coords.latitude,
+                longitud: coords.longitude,
+                geo_provider_id: proveedorId,
+                formatted_address: geoResult?.formatted_address ?? null,
+                descripcion: descripcion,
+                place_id: geoResult?.place_id ?? null
             };
             // 6. Agregar a la tabla de coordenadas
             await coordenadaService.create(registro_gps)
@@ -125,8 +124,8 @@ export function useCoordenadasForm() {
         coordenadas,
 
         rutaSeleccionada,
-        proveedorSeleccionado,        
-        
+        proveedorSeleccionado,
+
         rutaId,
         setRutaId,
 
@@ -140,6 +139,7 @@ export function useCoordenadasForm() {
         geoResult,
 
         loading,
-        obtenerCoordenadas
+        obtenerCoordenadas,
+        eliminarCoordenada
     };
 }
