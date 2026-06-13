@@ -3,7 +3,7 @@
     "display_override": ["window-controls-overlay"], 
     "theme_color": "#744e40",
     "orientation": "portrait",
-    "background_color": "#B68171",
+    "background_color": "#744e40",
     "display": "standalone",
     "handle_links": "preferred",
     "dir": "ltr",
@@ -167,25 +167,25 @@
     "screenshots":[
         {
             "src": "/screenshots/screenshot_0.webp",
-            "sizes": "720x1280",
+            "sizes": "738x1600",
             "type": "image/webp",
             "label": "Home"
         },
         {
             "src": "/screenshots/screenshot_1.webp",
-            "sizes": "720x1280",
+            "sizes": "738x1600",
             "type": "image/webp",
             "label": "Empresa"
         },
         {
             "src": "/screenshots/screenshot_2.webp",
-            "sizes": "720x1280",
+            "sizes": "738x1600",
             "type": "image/webp",
             "label": "Horarios"
         },
         {
             "src": "/screenshots/screenshot_3.webp",
-            "sizes": "720x1280",
+            "sizes": "738x1600",
             "type": "image/webp",
             "label": "Opciones QR"
         }

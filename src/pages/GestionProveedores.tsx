@@ -19,10 +19,10 @@ export const GestionProveedores = () => {
 
     return <PageNavbarContainer className="k-bg" bgClassName="k-bg" title={tr({ id: 'proveedores.gestion' })} fallback_url="/" hash_eval="#share" right={<MenuButton />}>
         {!standalone && <IPhoneUserAlert />}
-        <div className="mx-4">
+        <div className="mt-4 mx-2">
             <GestionProveedorForm proveedor={proveedorSeleccionado} unsetProveedor={unsetProveedor} />
         </div>
-        <div className="m-4 mt-8">
+        <div className="mx-2 mt-8">
             <GestionProveedoresTable data={proveedores} onDelete={deleteProveedor} onEdit={(item) => getProveedor(item.id)} />
         </div>
     </PageNavbarContainer>

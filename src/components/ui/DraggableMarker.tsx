@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Marker, Popup } from "react-leaflet"
 import type { Marker as LeafletMarker } from 'leaflet';
 import { useIntl } from 'react-intl';
+import { normalMarker } from "../svg/Leaflet";
 
 interface IProps extends IPos {// seguramente neceitamos callbacks    
     setPosicion: ({lat, lng}:IPos) => void
@@ -43,7 +44,9 @@ export const DraggableMarker = ({lat=-26.845085, lng=-65.221010, setPosicion}:IP
       draggable={draggable}
       eventHandlers={eventHandlers}
       position={markerPosition}
-      ref={markerRef}>
+      ref={markerRef}
+      icon={normalMarker}
+      >      
       <Popup minWidth={90}>
         <span onClick={toggleDraggable}>
           {draggable

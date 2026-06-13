@@ -18,7 +18,7 @@ export const Coordenadas = () => {
     return <PageNavbarContainer className="k-bg" bgClassName="k-bg" title={tr({id:'coordenadas'})} fallback_url="/" hash_eval="#share" right={<MenuButton/>}>
         { !standalone && <IPhoneUserAlert/> }
         <LocationConfigAdvice/>
-        <div className="mx-4">
+        <div className="mt-4 mx-2">
             <CoordenadasForm/>
         </div>
     </PageNavbarContainer>

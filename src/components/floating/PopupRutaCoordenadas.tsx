@@ -3,6 +3,7 @@ import type { IRegistroGPS } from "../../interfaces/IEntidades";
 import { Button } from "konsta/react";
 import { useIntl } from "react-intl";
 import React, { useEffect, useRef, useState } from "react";
+import { normalMarker } from "../svg/Leaflet";
 
 interface IProps {
     coordenadas: IRegistroGPS[]
@@ -63,7 +64,7 @@ export const PopupRutaCoordenadas = ({ coordenadas }: IProps) => {
                     lat: puntoActual.latitud,
                     lng: puntoActual.longitud
                 }}
-                zoom={19}
+                zoom={16}
                 scrollWheelZoom={true}
                 style={{ height: "480px", width: "100%" }}
             >
@@ -88,6 +89,7 @@ export const PopupRutaCoordenadas = ({ coordenadas }: IProps) => {
                                 lat: c.latitud,
                                 lng: c.longitud
                             }}
+                            icon={normalMarker}
                         >
                             <Popup>{c.descripcion}</Popup>
                         </Marker>

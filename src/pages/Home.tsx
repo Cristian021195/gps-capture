@@ -45,10 +45,10 @@ export const Home = () => {
 
     return <PageNavbarContainer className="k-bg" bgClassName="k-bg" title="GPS Capture" fallback_url="/" hash_eval="#share" right={<MenuButton/>}>
         { !standalone && <IPhoneUserAlert/> }
-        <MainDivTitle title={tr({id:'ges.rel'})} className="space-y-2 m-4">
+        <MainDivTitle title={tr({id:'ges.rel'})} className="space-y-2 mt-4 mx-2">
             <RelevamientoForm relevamiento={relItem} setRelItem={setRelItem}/>
         </MainDivTitle>
-        <div className="m-4 mt-4">
+        <div className="mt-4 mx-2">
             <RelevamientoTable data={relevamientos ?? []} onDelete={handleDelete} onEdit={setRelItem}/>
         </div>        
     </PageNavbarContainer>

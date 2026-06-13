@@ -1,11 +1,11 @@
 export const APP_VERSION={
     isUpdate: true,
     release: {
-        major: 0,
+        major: 1,
         minor: 0,
-        patch: 1
+        patch: 0
     },
-    release_date:  dateEsp(27,5,2026)
+    release_date:  dateEsp(13,6,2026)
 };
 
 export const APP_VERSION_UPDATE_LIST = {

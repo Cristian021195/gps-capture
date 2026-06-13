@@ -212,5 +212,9 @@
     "step.four.desc": "Recuerda crear un relevamiento, luego ruta asociada a dicho relevamiento, y coordenadas apuntadas a dicha ruta",
     "step.four.desc2": "Tampoco olvides de agregar la API key de aquellos proveedores que si requieran",
     "na": "N/A",
-    "options": "Más Opciones"
+    "options": "Más Opciones",
+    "err.conn": "Sin conexión a internet",
+    "ok.conn": "Conectado nuevamente",
+    "copy":"Copiado",
+    "copy.error":"Error al copiar"
 }

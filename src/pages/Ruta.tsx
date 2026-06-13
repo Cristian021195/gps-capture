@@ -21,10 +21,10 @@ export const Ruta = () => {
 
     return <PageNavbarContainer className="k-bg" bgClassName="k-bg" title={tr({id:'ruta'})} fallback_url="/" hash_eval="#share" right={<MenuButton/>}>
         { !standalone && <IPhoneUserAlert/> }
-        <MainDivTitle title={tr({id:'find.ruta'})} className="space-y-2 m-4">
+        <MainDivTitle title={tr({id:'find.ruta'})} className="space-y-2 mt-4 mx-2">
             <RutaForm onSearch={setBusqueda}/>
         </MainDivTitle>
-        <MainDivTitle title={tr({id:'ges.route'})} className="space-y-2 m-4">
+        <MainDivTitle title={tr({id:'ges.route'})} className="space-y-2 mt-4 mx-2">
             <RutaTable data={rutas ?? []} onEdit={setRutaItem} onDelete={handleDelete} onExport={handleExport} />
         </MainDivTitle>        
     </PageNavbarContainer>

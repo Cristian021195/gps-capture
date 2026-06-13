@@ -118,7 +118,7 @@ export const CoordenadasForm = () => {
                     onClear={() => { setDescripcion('') }}
                 />
             </List>
-            <div className="flex justify-between items-center content-center mx-4">
+            <div className="flex justify-between items-center content-center mx-4 gap-4">
                 <Button className="w-fit" disabled={coordenadas.length === 0} onClick={exportCSV}>{tr({ id: 'export.csv' })}</Button>
                 <Button className="w-fit" onClick={obtenerCoordenadas} disabled={!rutaId || !proveedorId || descripcion.length < 3}>
                     {
