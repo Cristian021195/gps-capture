@@ -14,6 +14,7 @@ import { Coordenadas } from "../pages/Coordenadas";
 import { Ruta } from "../pages/Ruta";
 import { Proveedores } from "../pages/Proovedores";
 import { GestionProveedores } from "../pages/GestionProveedores";
+import { Pruebas } from "../pages/Pruebas";
 
 
 export const router = createBrowserRouter([
@@ -40,7 +41,8 @@ export const router = createBrowserRouter([
           { path: "/ruta", element: <Ruta/> },
           { path: "/coordenadas", element: <Coordenadas/> },
           { path: "/proveedores", element: <Proveedores/> },
-          { path: "/gestion-proveedores", element: <GestionProveedores/> }
+          { path: "/gestion-proveedores", element: <GestionProveedores/> },
+          { path: "/pruebas", element: <Pruebas/> }
         ],
       }
     ],

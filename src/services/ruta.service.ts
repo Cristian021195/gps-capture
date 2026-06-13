@@ -63,6 +63,19 @@ export const rutaService = {
         }));
     },
 
+    async getCoordenadas(id: number){
+
+        const coordenadas = await db.coordenadas
+            .where("ruta_id")
+            .equals(id)
+            .toArray();
+
+        return {
+            coordenadas
+        }
+        
+    },
+
     async getRutaRelevamientoById(id: number): Promise<IRutaRelevamiento | undefined> {
         const ruta = await db.ruta.get(id);
 

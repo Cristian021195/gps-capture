@@ -29,8 +29,16 @@ export const Proveedores = () => {
             <div>
                 {
                     proveedores_default.map(((mp, mpi)=>{
-                        return <Card key={mpi} header={mp.nombre} footer={mp.service}>
-                            <img src={mp.img} className="h-20 mx-auto mb-2"/>
+                        return <Card 
+                                    key={mpi} 
+                                    header={
+                                        <div>
+                                            {mp.nombre}
+                                            <span className="text-xs">(<i>{mp.service}</i>)</span>
+                                        </div>
+                                    }
+                                >
+                                <img src={mp.img} className="h-16 mx-auto pt-0 mb-2"/>
                             { tr({id:mp.descripcion})}
                         </Card>
                     }))

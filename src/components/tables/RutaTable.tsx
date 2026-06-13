@@ -3,7 +3,7 @@ import { type ColumnDef, flexRender, getCoreRowModel, getPaginationRowModel, use
 import { Button } from "konsta/react";
 import { useIntl } from "react-intl";
 import { TrashIcon } from "../svg/FormIcons";
-import { CSVDownloadIcon, PencilIcon } from "../svg/UtilsIcon";
+import { CSVDownloadIcon, MapLayoutIcon, PencilIcon } from "../svg/UtilsIcon";
 import type { IRuta, IRutaRelevamiento } from "../../interfaces/IEntidades";
 import { useBottomModal } from "../../store/bottom_modal";
 import { useUpdateSearchParams } from "../../hooks/useUpdateSearchParams";
@@ -11,6 +11,10 @@ import { RutaEditForm } from "../forms/RutaEditForm";
 import { useModal } from "../../store/modal";
 import { ModalBorrarBase } from "../floating/ModalBorrarBase";
 import { ModalExportarCSV } from "../floating/ModalExportarCSV";
+import { usePopUp } from "../../store/popup";
+import { PopupRutaCoordenadas } from "../floating/PopupRutaCoordenadas";
+import { rutaService } from "../../services/ruta.service";
+import { useToast } from "../../store/toast";
 
 interface IRutaTableProps {
   data: IRutaRelevamiento[],
@@ -22,6 +26,8 @@ interface IRutaTableProps {
 export default function RutaTable({data, onDelete, onEdit, onExport}:IRutaTableProps) {
   const { openBottomModal } = useBottomModal();
   const { openModal } = useModal();
+  const { openPopUp } = usePopUp();
+  const {openToast} = useToast();
   const updateParams = useUpdateSearchParams();
   const {formatMessage:tr} = useIntl();
   const [pagination, setPagination] = useState({
@@ -78,11 +84,9 @@ export default function RutaTable({data, onDelete, onEdit, onExport}:IRutaTableP
                   content: <ModalExportarCSV 
                       desc={tr({id:'csv.export.desc'})} 
                       cba={()=>{
-                        //exportCSVRegistroGPS(coordenadas as IExportRegistroGPS[], 'linux')
                         onExport?.(row.original, 'linux');
                       }}
                       cbb={()=>{
-                        //exportCSVRegistroGPS(coordenadas as IExportRegistroGPS[], 'ms')
                         onExport?.(row.original, 'ms');
                       }}
                   />
@@ -91,6 +95,26 @@ export default function RutaTable({data, onDelete, onEdit, onExport}:IRutaTableP
               }}
             >
               <CSVDownloadIcon/>
+            </button>
+            <button
+              type="button"
+              className="btn-sm p-1 bg-green-400 text-white"
+              onClick={ async () => {
+                
+                const { coordenadas } = await rutaService.getCoordenadas(row.original.id);
+                if(coordenadas.length === 0){
+                  openToast({text:tr({id:'coord.empty'})});
+                }else{
+                  openPopUp({
+                    title: row.original.nombre,
+                    children: <PopupRutaCoordenadas coordenadas={coordenadas}/>
+                  });
+                  updateParams({ emergent: "popupbox" });
+                }
+                
+              }}
+            >
+              <MapLayoutIcon/>
             </button>
           </div>
         ),

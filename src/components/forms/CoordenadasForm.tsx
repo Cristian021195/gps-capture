@@ -11,11 +11,15 @@ import { exportCSVRegistroGPS } from "../../utils/export";
 import type { IExportRegistroGPS } from "../../interfaces/IExportEntidades";
 import { useUpdateSearchParams } from "../../hooks/useUpdateSearchParams";
 import { ModalBorrarBase } from "../floating/ModalBorrarBase";
+import { usePopUp } from "../../store/popup";
+import { PopupEditCoordenada } from "../floating/PopupEditCoordenada";
+import type { IRegistroGPS } from "../../interfaces/IEntidades";
 
 export const CoordenadasForm = () => {
     const { loading, rutas, proveedores, rutaId, proveedorId, coordenadas, descripcion, setRutaId, setProveedorId, setDescripcion, obtenerCoordenadas, eliminarCoordenada } = useCoordenadasForm();
     const { formatMessage: tr } = useIntl();
     const { openModal } = useModal();
+    const {openPopUp} = usePopUp();
     const updateParams = useUpdateSearchParams();
 
     const exportCSV = () => {
@@ -39,6 +43,23 @@ export const CoordenadasForm = () => {
             />
         });
         updateParams({ emergent: "modal" });
+    }
+
+    const editCoordenada = (coordenada: IRegistroGPS) => {
+        openPopUp({
+            title:coordenada.descripcion,
+            children: <PopupEditCoordenada 
+                cb={()=>{}}
+                data={coordenada}
+                descripcion={coordenada.descripcion}
+                formatted_address={coordenada.formatted_address}
+                latitud={coordenada.latitud}
+                longitud={coordenada.longitud}
+            >
+                <></>
+            </PopupEditCoordenada>
+        });
+        updateParams({ emergent: "popupbox" });
     }
 
     return (
@@ -123,6 +144,7 @@ export const CoordenadasForm = () => {
                                     longitud={c.longitud}
                                     place_id={c.place_id}
                                     deleteAction={() => { delCoordenada(c.id); }}
+                                    editAction={() => { editCoordenada(c); }}
                                 />
                             ))
                         }

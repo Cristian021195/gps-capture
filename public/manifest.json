@@ -1,7 +1,7 @@
 {
     "lang": "es",
     "display_override": ["window-controls-overlay"], 
-    "theme_color": "#B68171",
+    "theme_color": "#744e40",
     "orientation": "portrait",
     "background_color": "#B68171",
     "display": "standalone",

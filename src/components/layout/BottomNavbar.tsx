@@ -9,7 +9,7 @@ export const BottomNavbar = () => {
     const {formatMessage:tr} = useIntl(); 
     const {pathname} = useLocation();
     return (
-      <Tabbar bgClassName="bg-[#FAF9FE] dark:bg-[#131B1C]" className={`left-0 bottom-0 fixed ${pathname.match(/(?:^|\/)(info|privacy|config|instructivo|lang|notfound|proveedores)(?:\/|$)/) && 'hidden'}`}>
+      <Tabbar bgClassName="bg-[#FAF9FE] dark:bg-[#131B1C]" className={`left-0 bottom-0 fixed ${pathname.match(/(?:^|\/)(info|privacy|config|instructivo|lang|notfound|proveedores|pruebas)(?:\/|$)/) && 'hidden'}`}>
           <TabbarLink 
             className="k-title"
             active={pathname === '/'}
@@ -68,7 +68,7 @@ export const BottomNavbar = () => {
                   material={<BoxSeamIcon/>}
                 />
             }
-            label={<p>{tr({id:'proveedores'})}</p>}
+            label={<p>{tr({id:'prov.sm'})}</p>}
           />
       </Tabbar>
     );

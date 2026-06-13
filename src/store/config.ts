@@ -3,7 +3,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { IConfig } from "../interfaces/IConfig";
 
-const $themeColor = document.getElementById('theme-color')!;
+// const $themeColor = document.getElementById('theme-color')!;
 const $doc = document.documentElement!;
 const $viewport = document.getElementById('viewport')!;
 
@@ -27,10 +27,6 @@ persist(
             v
             ? $doc.classList.add("dark")
             : $doc.classList.remove("dark");
-
-            v
-            ? $themeColor?.setAttribute("content", "#1D2B2A")
-            : $themeColor?.setAttribute("content", "#4A7D73");
 
             return { night_mode: v };
         }),
@@ -66,10 +62,8 @@ persist(
             if (!state) return; // no hay estado guardado
             if (state.night_mode) {
                 $doc.classList.add("dark");
-                $themeColor?.setAttribute("content", "#1D2B2A");
             } else {
                 $doc.classList.remove("dark");
-                $themeColor?.setAttribute("content", "#4A7D73");
             }
         }
     }

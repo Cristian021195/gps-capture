@@ -93,7 +93,7 @@
 }
 .k-bg{
     /*@apply bg-[#faf9fe] dark:bg-[#0d0e12];*/
-    @apply material:bg-[#A1887F] material:dark:bg-[#744e40] ios:dark:bg-[#744e40] material:text-[#faf9fe];
+    @apply material:bg-[#744e40] material:dark:bg-[#744e40] ios:dark:bg-[#744e40] material:text-[#faf9fe];
 }
 .k-bg-tonal{
     /*@apply bg-[#faf9fe] dark:bg-[#0d0e12];*/

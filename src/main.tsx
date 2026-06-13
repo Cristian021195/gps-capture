@@ -1,6 +1,7 @@
-import { StrictMode } from 'react'
+// import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
+import 'leaflet/dist/leaflet.css';
 import App from './App.tsx'
 import { registerSW } from 'virtual:pwa-register';
 
@@ -15,8 +16,7 @@ const updateSW = registerSW({
   },  
 })
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
+createRoot(document.getElementById('root')!).render(  
     <App />
-  </StrictMode>,
 )
+// <StrictMode> </StrictMode>
