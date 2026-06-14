@@ -11,7 +11,7 @@ export const relevamientoService = {
         return db.relevamiento.toArray();
     },
 
-    async create(data: {nombre:string, key:string}) {
+    async create(data: { nombre: string, key: string }) {
         try {
             return await db.relevamiento.add(data as IRelevamiento);
         } catch (error) {
@@ -28,18 +28,13 @@ export const relevamientoService = {
         return db.relevamiento.update(id, data);
     },
 
-    /*
-    async delete(id: number) {
-        return db.relevamiento.delete(id);
-    }
-    */
     async delete(id: number) {
 
         return db.transaction(
             'rw',
             db.relevamiento,
             db.ruta,
-            //db.coordenada,
+            db.coordenadas,
 
             async () => {
 
@@ -55,10 +50,10 @@ export const relevamientoService = {
 
                 // Eliminar coordenadas
                 if (rutaIds.length > 0) {
-                    //await db.coordenada
-                    //    .where("ruta_id")
-                    //    .anyOf(rutaIds)
-                    //    .delete();
+                    await db.coordenadas
+                        .where("ruta_id")
+                        .anyOf(rutaIds)
+                        .delete();
                 }
 
                 // Eliminar rutas

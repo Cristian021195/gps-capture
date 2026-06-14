@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+
+if git diff --cached --quiet src/utils/version.ts; then
+  echo "❌ Debes actualizar la información de versionado primero: src/utils/version.ts"
+  exit 1
+fi
+
+if git diff --cached --quiet TODO.md; then
+  echo "❌ Debes actualizar las tareas: TODO.md"
+  exit 1
+fi
+
+echo "✅ Info de versionado actualizada"

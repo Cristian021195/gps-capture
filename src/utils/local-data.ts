@@ -1,10 +1,11 @@
-// import { db } from "../db/db";
+import { db } from "../db/db";
 
-export async function clearLocalData(){    
+export async function clearLocalData() {
     localStorage.removeItem('config');
     localStorage.removeItem('iphone_advice');
     return [
-        // db.empresas.clear(),
-        // db.horarios.clear()
+        db.relevamiento.clear(),
+        db.ruta.clear(),
+        db.coordenadas.clear()
     ];
 }

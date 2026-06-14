@@ -3,9 +3,9 @@ export const APP_VERSION={
     release: {
         major: 1,
         minor: 0,
-        patch: 0
+        patch: 1
     },
-    release_date:  dateEsp(13,6,2026)
+    release_date:  dateEsp(14,6,2026)
 };
 
 export const APP_VERSION_UPDATE_LIST = {

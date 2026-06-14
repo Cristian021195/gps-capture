@@ -97,8 +97,8 @@
     "help.step.3": "Paso 3: Seleccione",
     "help.rename": "incluso puede cambiarse el nombre",
     "borrardatos": "¿Borrar datos?",
-    "borrardatos.info": "Se borraran listado de precios, horarios, listado de empresas y se cierra la sesión actual",
-    "borrardatos.error": "No se pudieron borrar horarios y precios",
+    "borrardatos.info": "Se borraran listado de relevamientos, rutas y coordenadas",
+    "borrardatos.error": "No se pudieron borrar relevamientos, rutas y coordenadas",
     "reset.tour": "¿Reiniciar guía?",
     "reset.tour.info": "Se restablece la explicación sobre el uso de la aplicación en todas sus secciones",
     "reset.tour.ok": "Guia reiniciada, vuelva al inicio",
@@ -215,6 +215,9 @@
     "options": "Más Opciones",
     "err.conn": "Sin conexión a internet",
     "ok.conn": "Conectado nuevamente",
-    "copy":"Copiado",
-    "copy.error":"Error al copiar"
+    "copy": "Copiado",
+    "copy.error": "Error al copiar",
+    "coor.edited": "Coordenada editada",
+    "view.all": "Ver todas",
+    "export": "Exportar"
 }

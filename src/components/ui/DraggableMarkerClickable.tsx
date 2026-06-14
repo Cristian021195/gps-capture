@@ -6,6 +6,7 @@ import { normalMarker } from "../svg/Leaflet";
 
 interface IProps extends IPos {// seguramente neceitamos callbacks    
     setPosicion: ({lat, lng}:IPos) => void
+    onSelect?: () => void
 }
 
 interface IPos {
@@ -13,7 +14,7 @@ interface IPos {
     lng: number
 }
 
-export const DraggableMarker = ({lat=-26.845085, lng=-65.221010, setPosicion}:IProps) => {
+export const DraggableMarkerClickable = ({lat=-26.845085, lng=-65.221010, setPosicion, onSelect}:IProps) => {
   const [draggable, setDraggable] = useState(false)
   const {formatMessage:tr} = useIntl();
   const [markerPosition, setMarkerPosition] = useState({lat, lng})
@@ -26,6 +27,9 @@ export const DraggableMarker = ({lat=-26.845085, lng=-65.221010, setPosicion}:IP
           setMarkerPosition(marker.getLatLng() as IPos);
           setPosicion(marker.getLatLng() as IPos)
         }
+      },
+      click: () => {
+        onSelect?.();
       },
     }),
     [],
@@ -45,7 +49,7 @@ export const DraggableMarker = ({lat=-26.845085, lng=-65.221010, setPosicion}:IP
       eventHandlers={eventHandlers}
       position={markerPosition}
       ref={markerRef}
-      icon={normalMarker}      
+      icon={normalMarker}
       >      
       <Popup minWidth={90}>
         <span onClick={toggleDraggable}>

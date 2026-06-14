@@ -97,8 +97,8 @@
     "help.step.3": "Step 3: Select",
     "help.rename": "you can even change the name",
     "borrardatos": "Delete data?",
-    "borrardatos.info": "Price lists, schedules, company listings, and the current session will be deleted",
-    "borrardatos.error": "Unable to delete schedules and prices",
+    "borrardatos.info": "Surveys, routes and coordinates will be deleted",
+    "borrardatos.error": "Unable to delete surveys, routes and coordinates",
     "reset.tour": "Restart guide?",
     "reset.tour.info": "The application usage explanations will be reset in all sections",
     "reset.tour.ok": "Guide restarted, please return to the home page",
@@ -216,5 +216,8 @@
     "err.conn": "No internet connection",
     "ok.conn": "Connected again",
     "copy": "Copied",
-    "copy.error": "Error copying"
+    "copy.error": "Error copying",
+    "coor.edited": "Coordinate modified",
+    "view.all": "View All",
+    "export": "Export"
 }

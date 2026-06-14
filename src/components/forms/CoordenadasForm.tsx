@@ -14,12 +14,13 @@ import { ModalBorrarBase } from "../floating/ModalBorrarBase";
 import { usePopUp } from "../../store/popup";
 import { PopupEditCoordenada } from "../floating/PopupEditCoordenada";
 import type { IRegistroGPS } from "../../interfaces/IEntidades";
+import { PopupVerCoordenadas } from "../floating/PopupVerCoordenadas";
 
 export const CoordenadasForm = () => {
     const { loading, rutas, proveedores, rutaId, proveedorId, coordenadas, descripcion, setRutaId, setProveedorId, setDescripcion, obtenerCoordenadas, eliminarCoordenada } = useCoordenadasForm();
     const { formatMessage: tr } = useIntl();
     const { openModal } = useModal();
-    const {openPopUp} = usePopUp();
+    const { openPopUp } = usePopUp();
     const updateParams = useUpdateSearchParams();
 
     const exportCSV = () => {
@@ -47,9 +48,10 @@ export const CoordenadasForm = () => {
 
     const editCoordenada = (coordenada: IRegistroGPS) => {
         openPopUp({
-            title:coordenada.descripcion,
-            children: <PopupEditCoordenada 
-                cb={()=>{}}
+            title: coordenada.descripcion,
+            children: <PopupEditCoordenada
+                key={coordenada.id}
+                cb={() => { }}
                 data={coordenada}
                 descripcion={coordenada.descripcion}
                 formatted_address={coordenada.formatted_address}
@@ -58,6 +60,19 @@ export const CoordenadasForm = () => {
             >
                 <></>
             </PopupEditCoordenada>
+        });
+        updateParams({ emergent: "popupbox" });
+    }
+
+    const verCoordenadas = () => {
+        openPopUp({
+            title: tr({ id: 'coordenadas' }),
+            children: <PopupVerCoordenadas
+                cb={() => { }}
+                coordenadas={coordenadas as IRegistroGPS[]}
+            >
+                <></>
+            </PopupVerCoordenadas>
         });
         updateParams({ emergent: "popupbox" });
     }
@@ -118,36 +133,36 @@ export const CoordenadasForm = () => {
                     onClear={() => { setDescripcion('') }}
                 />
             </List>
-            <div className="flex justify-between items-center content-center mx-4 gap-4">
-                <Button className="w-fit" disabled={coordenadas.length === 0} onClick={exportCSV}>{tr({ id: 'export.csv' })}</Button>
+            <div className="flex justify-between items-center content-center mx-4 gap-2">
+                <Button className="w-fit" disabled={coordenadas.length === 0} onClick={exportCSV}>{tr({ id: 'export' })}</Button>
+                <Button className="w-fit" disabled={coordenadas.length === 0} onClick={verCoordenadas}>{tr({ id: 'view.all' })}</Button>
                 <Button className="w-fit" onClick={obtenerCoordenadas} disabled={!rutaId || !proveedorId || descripcion.length < 3}>
                     {
                         loading
-                            ? <Preloader />
+                            ? <Preloader className="text-white w-24" />
                             : tr({ id: 'gps.get' })
                     }
                 </Button>
             </div>
             {
                 coordenadas.length > 0 && <>
-                    <div className="m-4">{tr({ id: 'cord.cant' })}: {coordenadas.length}</div>
-                    <MainDivTitle title={tr({ id: 'latest.points' })}>
-                        {coordenadas
-                            .slice(0, 3)
-                            .map(c => (
-                                <CoordenadaInsertedCard
-                                    key={c.id}
-                                    descripcion={c.descripcion}
-                                    formatted_address={c.formatted_address}
-                                    geo_provider={c.geo_provider}
-                                    latitud={c.latitud}
-                                    longitud={c.longitud}
-                                    place_id={c.place_id}
-                                    deleteAction={() => { delCoordenada(c.id); }}
-                                    editAction={() => { editCoordenada(c); }}
-                                />
-                            ))
-                        }
+                    <MainDivTitle
+                        title={`${tr({ id: 'coordenadas' })} (${coordenadas.length})`}
+                        className="max-h-64 overflow-y-auto mt-4"
+                    >
+                        {coordenadas.map(c => (
+                            <CoordenadaInsertedCard
+                                key={c.id}
+                                descripcion={c.descripcion}
+                                formatted_address={c.formatted_address}
+                                geo_provider={c.geo_provider}
+                                latitud={c.latitud}
+                                longitud={c.longitud}
+                                place_id={c.place_id}
+                                deleteAction={() => delCoordenada(c.id)}
+                                editAction={() => editCoordenada(c)}
+                            />
+                        ))}
                     </MainDivTitle>
                 </>
             }

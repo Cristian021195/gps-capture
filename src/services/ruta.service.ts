@@ -24,21 +24,21 @@ export const rutaService = {
             return db.ruta.limit(10).toArray();
         } else {
             return db.ruta
-            .filter(r => {
-                const cleanText = TextHelper
-                    .from(r.nombre)
-                    .separaTildes()
-                    .remueveTildes()
-                    .setMinusculas()
-                    .reemplazaEspacios()
-                    .get();
+                .filter(r => {
+                    const cleanText = TextHelper
+                        .from(r.nombre)
+                        .separaTildes()
+                        .remueveTildes()
+                        .setMinusculas()
+                        .reemplazaEspacios()
+                        .get();
 
-                return (
-                    cleanText.includes(search) ||
-                    r.nombre.toLowerCase().includes(search)
-                );
-            })
-            .toArray();
+                    return (
+                        cleanText.includes(search) ||
+                        r.nombre.toLowerCase().includes(search)
+                    );
+                })
+                .toArray();
         }
     },
 
@@ -63,7 +63,7 @@ export const rutaService = {
         }));
     },
 
-    async getCoordenadas(id: number){
+    async getCoordenadas(id: number) {
 
         const coordenadas = await db.coordenadas
             .where("ruta_id")
@@ -73,7 +73,7 @@ export const rutaService = {
         return {
             coordenadas
         }
-        
+
     },
 
     async getRutaRelevamientoById(id: number): Promise<IRutaRelevamiento | undefined> {
@@ -122,7 +122,7 @@ export const rutaService = {
         }));
     },
 
-    async create(data: {nombre:string, relevamiento_id: number, key:string}) {
+    async create(data: { nombre: string, relevamiento_id: number, key: string }) {
         try {
             return await db.ruta.add(data as IRuta);
         } catch (error) {
@@ -140,6 +140,20 @@ export const rutaService = {
     },
 
     async delete(id: number) {
-        return db.ruta.delete(id);
+        return db.transaction(
+            'rw',
+            db.ruta,
+            db.coordenadas,
+            async () => {
+                // Eliminar coordenadas
+                await db.coordenadas
+                    .where("ruta_id")
+                    .equals(id)
+                    .delete();
+
+                // Eliminar ruta
+                await db.ruta.delete(id);
+            }
+        )
     }
 };

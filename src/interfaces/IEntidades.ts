@@ -179,7 +179,7 @@ export interface IGeoProvider {
     /**
      * Normalizamos los proveedores mas comunes, agregar mas a futuro
      */
-    provider_type: 'google' | 'osm' | 'mapbox' | 'bing'
+    provider_type: 'google' | 'osm' | 'locationiq' | 'mapbox' | 'bing' | 'heremaps'
     
     /**
      * Fecha de creación en milisegundos

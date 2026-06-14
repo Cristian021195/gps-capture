@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react"
 import type { IRegistroGPS } from "../interfaces/IEntidades";
 import { coordenadaService } from "../services/coordenada.service";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "../store/toast";
+import { useIntl } from "react-intl";
 
 export const useCoordenada = (data:IRegistroGPS) => {
     const [latitud, setLatitud] = useState<number>(data.latitud);
@@ -9,6 +12,9 @@ export const useCoordenada = (data:IRegistroGPS) => {
     const [descripcion, setDescripcion] = useState<string | undefined>(data.descripcion);
     const [enable, setEnable] = useState(true);
     const [isDrag, setIsDrag] = useState(false);
+    const navigate = useNavigate();
+    const {openToast} = useToast();
+    const {formatMessage:tr} = useIntl();
     
     
     useEffect(()=>{
@@ -25,6 +31,8 @@ export const useCoordenada = (data:IRegistroGPS) => {
             formatted_address:formattedAddress,
             descripcion
         });
+        openToast({text:tr({id:"coor.edited"})})
+        navigate(-1);
     }
 
     const reset = () => {

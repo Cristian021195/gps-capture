@@ -18,7 +18,7 @@ export function PopUpBox(){
         <Page>
           <Navbar
             className="k-title"
-            title={title}
+            title={<div className="max-w-64 truncate">{title}</div>}
             right={
               <Button title='Cerrar' className='mr-3 ios:m-0 k-btn' small rounded onClick={() => {
                 navigate(-1);
